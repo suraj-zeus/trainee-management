@@ -1,0 +1,88 @@
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/appsettings.Development.json
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/appsettings.json
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Trainee.api.staticwebassets.endpoints.json
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Trainee.api
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Trainee.api.deps.json
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Trainee.api.runtimeconfig.json
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Trainee.api.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Trainee.api.pdb
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Namotion.Reflection.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/Newtonsoft.Json.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NJsonSchema.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NJsonSchema.Annotations.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NJsonSchema.NewtonsoftJson.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NJsonSchema.Yaml.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NSwag.Annotations.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NSwag.AspNetCore.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NSwag.Core.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NSwag.Core.Yaml.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NSwag.Generation.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/NSwag.Generation.AspNetCore.dll
+/mnt/d/trainee-management/Trainee.api/bin/Debug/net10.0/YamlDotNet.dll
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.csproj.AssemblyReference.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/rpswa.dswa.cache.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.AssemblyInfoInputs.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.AssemblyInfo.cs
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.csproj.CoreCompileInputs.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.MvcApplicationPartsAssemblyInfo.cs
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.MvcApplicationPartsAssemblyInfo.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/rjimswa.dswa.cache.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/rjsmrazor.dswa.cache.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/scopedcss/bundle/Trainee.api.styles.css
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/staticwebassets.build.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/staticwebassets.build.json.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/staticwebassets.development.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/staticwebassets.build.endpoints.json
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/swae.build.ex.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee..16FFAE75.Up2Date
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.dll
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/refint/Trainee.api.dll
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.pdb
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/Trainee.api.genruntimeconfig.cache
+/mnt/d/trainee-management/Trainee.api/obj/Debug/net10.0/ref/Trainee.api.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/appsettings.Development.json
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/appsettings.json
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Trainee.api.staticwebassets.endpoints.json
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Trainee.api
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Trainee.api.deps.json
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Trainee.api.runtimeconfig.json
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Trainee.api.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Trainee.api.pdb
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Namotion.Reflection.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/Newtonsoft.Json.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NJsonSchema.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NJsonSchema.Annotations.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NJsonSchema.NewtonsoftJson.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NJsonSchema.Yaml.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NSwag.Annotations.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NSwag.AspNetCore.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NSwag.Core.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NSwag.Core.Yaml.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NSwag.Generation.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/NSwag.Generation.AspNetCore.dll
+/mnt/d/trainee-management - june-5/Trainee.api/bin/Debug/net10.0/YamlDotNet.dll
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.csproj.AssemblyReference.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/rpswa.dswa.cache.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.AssemblyInfoInputs.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.AssemblyInfo.cs
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.csproj.CoreCompileInputs.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.MvcApplicationPartsAssemblyInfo.cs
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.MvcApplicationPartsAssemblyInfo.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/rjimswa.dswa.cache.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/rjsmrazor.dswa.cache.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/scopedcss/bundle/Trainee.api.styles.css
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/staticwebassets.build.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/staticwebassets.build.json.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/staticwebassets.development.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/staticwebassets.build.endpoints.json
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/swae.build.ex.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee..16FFAE75.Up2Date
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.dll
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/refint/Trainee.api.dll
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.pdb
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/Trainee.api.genruntimeconfig.cache
+/mnt/d/trainee-management - june-5/Trainee.api/obj/Debug/net10.0/ref/Trainee.api.dll
