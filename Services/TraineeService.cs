@@ -28,6 +28,18 @@ public class TraineeService : ITraineeService
         return traineesResponse;
     }
 
+    public async Task<List<TraineeResponseDto>> GetAllTraineesWithSeachParam(string searchParam)
+    {
+        List<TraineeModel> trainees = await _traineeRepository.GetTraineesWithSearchParam(searchParam);
+        List<TraineeResponseDto> traineesResponse =  new List<TraineeResponseDto>();
+
+        foreach(TraineeModel trainee in trainees) {
+            traineesResponse.Add(MapTraineeModelToTraineeResponseDto(trainee));
+        }
+
+        return traineesResponse;
+    }
+
     public async Task<TraineeResponseDto> GetTraineeById(int id)
     {
         TraineeModel trainee = await _traineeRepository.GetById(id);

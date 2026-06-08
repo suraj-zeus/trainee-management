@@ -2,7 +2,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 
-using Trainee.api.Models;
 using Trainee.api.dto;
 using Trainee.api.Services;
 
@@ -23,9 +22,14 @@ namespace Trainee.api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(string? search)
         {
-            return Ok(await _traineeService.GetAllTrainees());
+
+            List<TraineeResponseDto> trainees = !string.IsNullOrEmpty(search)
+                                        ? await _traineeService.GetAllTraineesWithSeachParam(search)
+                                        : await _traineeService.GetAllTrainees();
+
+            return Ok(trainees);
         }
 
         [HttpGet("{id}")]

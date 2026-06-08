@@ -6,6 +6,8 @@ namespace Trainee.api.Services;
 
 public interface ITraineeService
 {
+    public Task<List<TraineeResponseDto>> GetAllTraineesWithSeachParam(string searchParam);
+
     public Task<List<TraineeResponseDto>> GetAllTrainees();
 
     public Task<TraineeResponseDto> GetTraineeById(int id);

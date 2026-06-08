@@ -8,7 +8,7 @@ namespace Trainee.api.Repositories;
 
 public class TraineeRepository : ITraineeRepository
 {
-    
+
     private AppDbContext _appDbContext;
 
     public TraineeRepository(AppDbContext appDbContext)
@@ -16,10 +16,23 @@ public class TraineeRepository : ITraineeRepository
         _appDbContext = appDbContext;
     }
 
-   
+
     public async Task<List<TraineeModel>> GetTrainees()
     {
         return await _appDbContext.Trainees.ToListAsync();
+    }
+
+    public async Task<List<TraineeModel>> GetTraineesWithSearchParam(string searchParam)
+    {
+        return await _appDbContext
+            .Trainees
+            .Where(t =>
+                t.FirstName.ToLower().Contains(searchParam.ToLower()) ||
+                t.LastName.ToLower().Contains(searchParam.ToLower()) ||
+                t.Email.ToLower().Contains(searchParam.ToLower()) ||
+                t.TechStack.ToLower().Contains(searchParam.ToLower())
+            )
+            .ToListAsync();
     }
 
     public async Task<TraineeModel> GetById(int id)
@@ -36,9 +49,9 @@ public class TraineeRepository : ITraineeRepository
         await _appDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteById(TraineeModel traineeModel)
+    public async Task DeleteById(TraineeModel trainee)
     {
-        _appDbContext.Trainees.Remove(traineeModel);
+        _appDbContext.Trainees.Remove(trainee);
         _appDbContext.SaveChanges();
     }
 
@@ -52,7 +65,7 @@ public class TraineeRepository : ITraineeRepository
         trainee.TechStack = updateTraineeDto.TechStack;
         trainee.Status = updateTraineeDto.Status;
 
-        // only update updated at timestamp
+        // update updated at timestamp
         trainee.UpdatedAt = DateTime.Now;
 
         await _appDbContext.SaveChangesAsync();

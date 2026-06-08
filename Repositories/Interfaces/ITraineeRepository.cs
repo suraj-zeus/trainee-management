@@ -12,6 +12,8 @@ public interface ITraineeRepository
 {
     public Task<List<TraineeModel>> GetTrainees();
 
+    public Task<List<TraineeModel>> GetTraineesWithSearchParam(string searchParam);
+
     public Task<TraineeModel> GetById(int id);
 
     public Task Add(TraineeModel trainee);
