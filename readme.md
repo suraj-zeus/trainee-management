@@ -3,9 +3,10 @@
 
 ## Technology Used
 - dotnet - to create all apis
+- ef core - for in memory database
 
 ## How to Run
-- Download the project folder (Trainee.api)
+- Download the project folder
 - Open the project folder in any IDE
 - Open terminal, go to root project folder path and run this command 'dotnet run'
 - To test the apis, go to this url http://localhost:port/swagger/index.html
@@ -20,7 +21,7 @@ Working API endpoints:
 - DELETE /api/trainees/{id}
 
 
-## expected response for each api
+## api endpoints and expected response for each api
 
 - PUT /api/trainees/{id}
     - Valid trainee ID 200 OK
@@ -49,77 +50,82 @@ Working API endpoints:
 - Must have dotnet installed on the system to run this projects
 
 
-
 ## Sample Request JSON
 Sample POST /api/trainees request:
-{
-  "firstName": "john",
-  "lastName": "joe",
-  "email": "john.joe@training.com",
-  "techStack": "HTML, CSS, JavaScript",
-  "status": "Active"
-}
+
+    {
+        "firstName": "john",
+        "lastName": "joe",
+        "email": "john.joe@training.com",
+        "techStack": "HTML, CSS, JavaScript",
+        "status": "Active"
+    }
  
 Sample PUT /api/trainees/1 request:
-{  
-  "firstName": "john",
-  "lastName": "cena",
-  "email": "john.cena@training.com",
-  "techStack": "Java",
-  "status": "InActive"
-}
+
+    {  
+        "firstName": "john",
+        "lastName": "cena",
+        "email": "john.cena@training.com",
+        "techStack": "Java",
+        "status": "InActive"
+    }
  
 ## Sample Response JSON
 Sample GET /api/trainees response:
-[
-  {
-    "id": 1,
-    "firstName": "john",
-    "lastName": "doe",
-    "email": "john.doe@training.com",
-    "techStack": "HTML, CSS, JavaScript",
-    "status": "Active",
-    "createdDate": "2026-06-08T10:55:05.7288647+00:00",
-    "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
-  }
-]
+
+    [
+        {
+            "id": 1,
+            "firstName": "john",
+            "lastName": "doe",
+            "email": "john.doe@training.com",
+            "techStack": "HTML, CSS, JavaScript",
+            "status": "Active",
+            "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+            "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
+        }
+    ]
  
 Sample POST /api/trainees response:
-{
-  
-    "id": 1,
-    "firstName": "john",
-    "lastName": "joe",
-    "email": "john.doe@training.com",
-    "techStack": "HTML, CSS, JavaScript",
-    "status": "Active"
-    "createdDate": "2026-06-08T10:55:05.7288647+00:00",
-    "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
-}
- 
+
+    {
+    
+        "id": 1,
+        "firstName": "john",
+        "lastName": "joe",
+        "email": "john.doe@training.com",
+        "techStack": "HTML, CSS, JavaScript",
+        "status": "Active"
+        "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+        "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
+    }
+    
 Sample GET /api/trainees/{id} response:
-{
-  "id": 1,
-  "firstName": "john",
-  "lastName": "joe",
-  "email": "john.doe@training.com",
-  "techStack": "HTML, CSS, JavaScript",
-  "status": "Active",
-  "createdDate": "2026-06-08T10:55:05.7288647+00:00",
-  "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
-}
+
+    {
+        "id": 1,
+        "firstName": "john",
+        "lastName": "joe",
+        "email": "john.doe@training.com",
+        "techStack": "HTML, CSS, JavaScript",
+        "status": "Active",
+        "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+        "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
+    }
  
 Sample PUT /api/trainees/{id} response:
-{
-  "id": 1,
-  "firstName": "john",
-  "lastName": "joe",
-  "email": "john.doe@training.com",
-  "techStack": "HTML, CSS, JavaScript",
-  "status": "Inactive",
-  "createdDate": "2026-06-08T10:55:05.7288647+00:00",
-  "updatedDate": "2026-06-08T10:57:22.9859447+00:00"
-}
+
+    {
+        "id": 1,
+        "firstName": "john",
+        "lastName": "joe",
+        "email": "john.doe@training.com",
+        "techStack": "HTML, CSS, JavaScript",
+        "status": "Inactive",
+        "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+        "updatedDate": "2026-06-08T10:57:22.9859447+00:00"
+    }
 
 ## Challanges faced
 - While installing dotnet packages and setting up initial web project in dotnet
