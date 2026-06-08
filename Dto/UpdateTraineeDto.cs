@@ -1,7 +1,11 @@
 
-using System.ComponentModel.DataAnnotations; 
+using System.ComponentModel.DataAnnotations;
 
 namespace Trainee.api.dto;
+
+
+
+
 
 public class UpdateTraineeDto {
 
@@ -26,6 +30,7 @@ public class UpdateTraineeDto {
 
 
     [Required(ErrorMessage = "Status is required")]
+    [EnumDataType(typeof(Status), ErrorMessage = "Invalid Status. Allowed values are: Active, Inactive, and Completed")]
     public string Status {get; set;} = string.Empty;
 
 

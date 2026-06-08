@@ -22,9 +22,8 @@ namespace Trainee.api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(string? search)
+        public async Task<ActionResult<List<TraineeResponseDto>>> GetAll(string? search)
         {
-
             List<TraineeResponseDto> trainees = !string.IsNullOrEmpty(search)
                                         ? await _traineeService.GetAllTraineesWithSeachParam(search)
                                         : await _traineeService.GetAllTrainees();
@@ -33,31 +32,29 @@ namespace Trainee.api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<TraineeResponseDto>> GetById(int id)
         {
             TraineeResponseDto trainee = await _traineeService.GetTraineeById(id);
 
             if (trainee == null)
-            {
-                return NotFound();
-            }
+                return NotFound(new {Message = $"Trainee with ID {id} was not found."});
 
             return Ok(trainee);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(int id)
+        public async Task<ActionResult> DeleteById(int id)
         {
             bool deleted = await _traineeService.DeleteTraineeById(id);
 
             if (!deleted)
-                return NotFound();
+                return NotFound(new {Message = $"Trainee with ID {id} was not found."});
 
             return NoContent();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CreateTraineeDto createTraineeDto)
+        public async Task<ActionResult<TraineeResponseDto>> Add(CreateTraineeDto createTraineeDto)
         {
 
             TraineeResponseDto trainee = await _traineeService.AddTrainee(createTraineeDto);
@@ -65,7 +62,7 @@ namespace Trainee.api.Controllers
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = trainee.Id },
-                new { message = "Data Added Successfully", data = trainee }
+                trainee
             );
 
         }
@@ -73,20 +70,16 @@ namespace Trainee.api.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateTraineeDto updateTraineeDto)
+        public async Task<ActionResult<TraineeResponseDto>> Update(int id, UpdateTraineeDto updateTraineeDto)
         {
             TraineeResponseDto trainee = await _traineeService.UpdateTraineeById(updateTraineeDto, id);
 
             if (trainee == null)
             {
-                return NotFound();
+                return NotFound(new {Message = $"Trainee with ID {id} was not found."});
             }
 
-            return Ok(new
-            {
-                message = "Data updated Successfully",
-                data = trainee,
-            });
+            return Ok(trainee);
         }
 
     }

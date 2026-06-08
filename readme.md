@@ -1,7 +1,14 @@
+
 # Trainee Management API
 
 ## Technology Used
 - dotnet - to create all apis
+
+## How to Run
+- Download the project folder (Trainee.api)
+- Open the project folder in any IDE
+- Open terminal, go to root project folder path and run this command 'dotnet run'
+- To test the apis, go to this url http://localhost:port/swagger/index.html
 
 ## Features Completed
 Working API endpoints:
@@ -12,14 +19,6 @@ Working API endpoints:
 - PUT /api/trainees/{id}
 - DELETE /api/trainees/{id}
 
-## requirements
-- Must have dotnet installed on the system to run this project
-
-## How to Run
-- Download the project folder (Trainee.api)
-- Open the project folder in any IDE
-- Open terminal, go to root project folder path and run this command 'dotnet run'
-- To test the apis, go to this url http://localhost:port/swagger/index.html
 
 ## expected response for each api
 
@@ -46,13 +45,86 @@ Working API endpoints:
     - Valid ID 200 OK
     - Invalid ID 404 Not Found
 
+## requirements
+- Must have dotnet installed on the system to run this projects
+
+
+
+## Sample Request JSON
+Sample POST /api/trainees request:
+{
+  "firstName": "john",
+  "lastName": "joe",
+  "email": "john.joe@training.com",
+  "techStack": "HTML, CSS, JavaScript",
+  "status": "Active"
+}
+ 
+Sample PUT /api/trainees/1 request:
+{  
+  "firstName": "john",
+  "lastName": "cena",
+  "email": "john.cena@training.com",
+  "techStack": "Java",
+  "status": "InActive"
+}
+ 
+## Sample Response JSON
+Sample GET /api/trainees response:
+[
+  {
+    "id": 1,
+    "firstName": "john",
+    "lastName": "doe",
+    "email": "john.doe@training.com",
+    "techStack": "HTML, CSS, JavaScript",
+    "status": "Active",
+    "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+    "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
+  }
+]
+ 
+Sample POST /api/trainees response:
+{
+  
+    "id": 1,
+    "firstName": "john",
+    "lastName": "joe",
+    "email": "john.doe@training.com",
+    "techStack": "HTML, CSS, JavaScript",
+    "status": "Active"
+    "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+    "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
+}
+ 
+Sample GET /api/trainees/{id} response:
+{
+  "id": 1,
+  "firstName": "john",
+  "lastName": "joe",
+  "email": "john.doe@training.com",
+  "techStack": "HTML, CSS, JavaScript",
+  "status": "Active",
+  "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+  "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
+}
+ 
+Sample PUT /api/trainees/{id} response:
+{
+  "id": 1,
+  "firstName": "john",
+  "lastName": "joe",
+  "email": "john.doe@training.com",
+  "techStack": "HTML, CSS, JavaScript",
+  "status": "Inactive",
+  "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+  "updatedDate": "2026-06-08T10:57:22.9859447+00:00"
+}
+
 ## Challanges faced
 - While installing dotnet packages and setting up initial web project in dotnet
 - While installing and setting up swagger in the current project for testing apis
 
-## Improvements Planned
-Day 3 Goal
-- Replace manual List<T> storage with EF Core InMemory Database.
-- Introduce DbContext, DbSet, async/await, LINQ filtering, and search query parameters.
-- Prepare trainees for Phase 2, where the same project will move to EF Core Code First with a real database.
-
+## Limitations
+- It currently uses In Memory database which holds data temporarily. It lacks real Sql/No Sql database connection.
+- Absence of authentication and authorisation

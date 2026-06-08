@@ -60,9 +60,9 @@ public class TraineeService : ITraineeService
             Status = createTraineeDto.Status
         };
 
-        // set ids and timestamps
-        trainee.CreatedAt = DateTime.Now;
-        trainee.UpdatedAt = DateTime.Now;
+        // set timestamps
+        trainee.CreatedAt = DateTime.UtcNow;
+        trainee.UpdatedAt = DateTime.UtcNow;
 
         await _traineeRepository.Add(trainee);
         return MapTraineeModelToTraineeResponseDto(trainee);

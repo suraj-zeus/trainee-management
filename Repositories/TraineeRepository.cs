@@ -42,7 +42,6 @@ public class TraineeRepository : ITraineeRepository
     }
 
 
-
     public async Task Add(TraineeModel trainee)
     {
         await _appDbContext.Trainees.AddAsync(trainee);
@@ -66,8 +65,7 @@ public class TraineeRepository : ITraineeRepository
         trainee.Status = updateTraineeDto.Status;
 
         // update updated at timestamp
-        trainee.UpdatedAt = DateTime.Now;
-
+        trainee.UpdatedAt = DateTime.UtcNow;
         await _appDbContext.SaveChangesAsync();
     }
 
