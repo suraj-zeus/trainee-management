@@ -1,6 +1,5 @@
 
 using Trainee.api.dto;
-using Trainee.api.Interfaces;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
 
@@ -9,9 +8,17 @@ namespace Trainee.api.Services;
 
 public class TraineeService : ITraineeService
 {
-    public List<TraineeResponseDto> GetAllTrainees()
+
+    private ITraineeRepository _traineeRepository;
+
+    public TraineeService(ITraineeRepository traineeRepository)
     {
-        List<TraineeModel> trainees = TraineeRepository.GetTrainees();
+        _traineeRepository = traineeRepository;
+    }
+
+    public async Task<List<TraineeResponseDto>> GetAllTrainees()
+    {
+        List<TraineeModel> trainees = await _traineeRepository.GetTrainees();
         List<TraineeResponseDto> traineesResponse =  new List<TraineeResponseDto>();
 
         foreach(TraineeModel trainee in trainees) {
@@ -21,16 +28,16 @@ public class TraineeService : ITraineeService
         return traineesResponse;
     }
 
-    public TraineeResponseDto GetTraineeById(int id)
+    public async Task<TraineeResponseDto> GetTraineeById(int id)
     {
-        TraineeModel trainee = TraineeRepository.GetById(id);
+        TraineeModel trainee = await _traineeRepository.GetById(id);
 
         if(trainee == null)
             return null;
         return MapTraineeModelToTraineeResponseDto(trainee);
     }
 
-    public TraineeResponseDto AddTrainee(CreateTraineeDto createTraineeDto)
+    public async Task<TraineeResponseDto> AddTrainee(CreateTraineeDto createTraineeDto)
     {
         TraineeModel trainee = new()
         {
@@ -42,41 +49,33 @@ public class TraineeService : ITraineeService
         };
 
         // set ids and timestamps
-        TraineeRepository.IncrementLastId();
-        trainee.Id = TraineeRepository.GetLastId();
         trainee.CreatedAt = DateTime.Now;
         trainee.UpdatedAt = DateTime.Now;
 
-        TraineeRepository.Add(trainee);
+        await _traineeRepository.Add(trainee);
         return MapTraineeModelToTraineeResponseDto(trainee);
     }
 
 
-    public bool DeleteTraineeById(int id)
+    public async Task<bool> DeleteTraineeById(int id)
     {
-        TraineeModel trainee = TraineeRepository.GetById(id);
+        TraineeModel trainee = await _traineeRepository.GetById(id);
 
         if (trainee == null)
             return false;
 
-        TraineeRepository.DeleteById(trainee);
+        await _traineeRepository.DeleteById(trainee);
         return true;
     }
 
-    public TraineeResponseDto UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
+    public async Task<TraineeResponseDto> UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
     {
-        TraineeModel trainee = TraineeRepository.GetById(id);
+        TraineeModel trainee = await _traineeRepository.GetById(id);
         if (trainee == null)
             return null;
 
-        trainee.FirstName = updateTraineeDto.FirstName;
-        trainee.LastName = updateTraineeDto.LastName;
-        trainee.Email = updateTraineeDto.Email;
-        trainee.TechStack = updateTraineeDto.TechStack;
-        trainee.Status = updateTraineeDto.Status;
+        await _traineeRepository.UpdateTraineeById(updateTraineeDto, id);
 
-        // only update updated at timestamp
-        trainee.UpdatedAt = DateTime.Now;
         return MapTraineeModelToTraineeResponseDto(trainee);
     }
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Trainee.api.Models;
 using Trainee.api.dto;
-using Trainee.api.Interfaces;
+using Trainee.api.Services;
 
 namespace Trainee.api.Controllers
 {
@@ -14,26 +14,24 @@ namespace Trainee.api.Controllers
     public class TraineesController : ControllerBase
     {
 
-        private readonly ITraineeService iTraineeService;
+        private readonly ITraineeService _traineeService;
 
         // The DI container automatically resolves and provides IUserService here
         public TraineesController(ITraineeService traineeService)
         {
-            iTraineeService = traineeService;
+            _traineeService = traineeService;
         }
 
-       
-
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(iTraineeService.GetAllTrainees());
+            return Ok(await _traineeService.GetAllTrainees());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            TraineeResponseDto trainee = iTraineeService.GetTraineeById(id);
+            TraineeResponseDto trainee = await _traineeService.GetTraineeById(id);
 
             if (trainee == null)
             {
@@ -44,9 +42,9 @@ namespace Trainee.api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteById(int id)
+        public async Task<IActionResult> DeleteById(int id)
         {
-            bool deleted = iTraineeService.DeleteTraineeById(id);
+            bool deleted = await _traineeService.DeleteTraineeById(id);
 
             if (!deleted)
                 return NotFound();
@@ -55,14 +53,14 @@ namespace Trainee.api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(CreateTraineeDto createTraineeDto)
+        public async Task<IActionResult> Add(CreateTraineeDto createTraineeDto)
         {
 
-            TraineeResponseDto trainee = iTraineeService.AddTrainee(createTraineeDto);
+            TraineeResponseDto trainee = await _traineeService.AddTrainee(createTraineeDto);
 
             return CreatedAtAction(
-                nameof(GetById), 
-                new { id = trainee.Id }, 
+                nameof(GetById),
+                new { id = trainee.Id },
                 new { message = "Data Added Successfully", data = trainee }
             );
 
@@ -70,11 +68,10 @@ namespace Trainee.api.Controllers
 
 
 
-
         [HttpPut("{id}")]
-        public IActionResult Update(int id, UpdateTraineeDto updateTraineeDto)
+        public async Task<IActionResult> Update(int id, UpdateTraineeDto updateTraineeDto)
         {
-            TraineeResponseDto trainee = iTraineeService.UpdateTraineeById(updateTraineeDto, id);
+            TraineeResponseDto trainee = await _traineeService.UpdateTraineeById(updateTraineeDto, id);
 
             if (trainee == null)
             {
@@ -86,9 +83,7 @@ namespace Trainee.api.Controllers
                 message = "Data updated Successfully",
                 data = trainee,
             });
-            
         }
-
 
     }
 }

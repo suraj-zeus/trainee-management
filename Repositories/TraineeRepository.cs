@@ -1,89 +1,61 @@
-
+using Microsoft.EntityFrameworkCore;
+using Trainee.api.DatabaseContext;
 using Trainee.api.dto;
 using Trainee.api.Models;
 
+
 namespace Trainee.api.Repositories;
 
-public static class TraineeRepository
+public class TraineeRepository : ITraineeRepository
 {
+    
+    private AppDbContext _appDbContext;
+
+    public TraineeRepository(AppDbContext appDbContext)
+    {
+        _appDbContext = appDbContext;
+    }
+
    
-
-    private static List<TraineeModel> trainees = [
-         new TraineeModel
-        {
-            Id = 1,
-            FirstName = "Suraj",
-            LastName = "Prajapati",
-            Email = "suraj@gmail.com",
-            TechStack = "Java",
-            Status = "Active"
-        },
-        new TraineeModel
-        {
-            Id = 2,
-            FirstName = "Abhishek",
-            LastName = "Revenkar",
-            Email = "abhishek@gmail.com",
-            TechStack = "Android",
-            Status = "Training"
-        },
-        new TraineeModel
-        {
-            Id = 3,
-            FirstName = "Anand",
-            LastName = "Prajapati",
-            Email = "anand@gamil.com",
-            TechStack = "Kotlin",
-            Status = "Training"
-        }
-    ];
-
-
-    private static int lastId = 3;
-
-    public static void IncrementLastId()
+    public async Task<List<TraineeModel>> GetTrainees()
     {
-        lastId += 1;
+        return await _appDbContext.Trainees.ToListAsync();
     }
 
-    public static int GetLastId()
+    public async Task<TraineeModel> GetById(int id)
     {
-        return lastId;
-    }
-
-    public static List<TraineeModel> GetTrainees()
-    {
-        return trainees;
-    }
-
-    public static TraineeModel GetById(int id)
-    {
-
-        if(id <= 0) return null;
-
-        TraineeModel trainee = null;
-        for (int i = 0; i < trainees.Count; i++)
-        {
-            if (trainees[i].Id == id)
-            {
-                trainee = trainees[i];
-                break;
-            }
-        }
-
+        TraineeModel trainee = await _appDbContext.Trainees.FindAsync(id);
         return trainee;
     }
 
 
 
-    public static void Add(TraineeModel trainee)
+    public async Task Add(TraineeModel trainee)
     {
-        trainees.Add(trainee);
+        await _appDbContext.Trainees.AddAsync(trainee);
+        await _appDbContext.SaveChangesAsync();
     }
 
-    public static void DeleteById(TraineeModel traineeModel)
+    public async Task DeleteById(TraineeModel traineeModel)
     {
-        trainees.Remove(traineeModel);
+        _appDbContext.Trainees.Remove(traineeModel);
+        _appDbContext.SaveChanges();
+    }
+
+    public async Task UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
+    {
+        TraineeModel trainee = await _appDbContext.Trainees.FindAsync(id);
+
+        trainee.FirstName = updateTraineeDto.FirstName;
+        trainee.LastName = updateTraineeDto.LastName;
+        trainee.Email = updateTraineeDto.Email;
+        trainee.TechStack = updateTraineeDto.TechStack;
+        trainee.Status = updateTraineeDto.Status;
+
+        // only update updated at timestamp
+        trainee.UpdatedAt = DateTime.Now;
+
+        await _appDbContext.SaveChangesAsync();
     }
 
 }
