@@ -24,13 +24,15 @@ public class TraineeRepository : ITraineeRepository
 
     public async Task<List<TraineeModel>> GetTraineesWithSearchParam(string searchParam)
     {
+        string searchParamLower = searchParam.ToLower();
+
         return await _appDbContext
             .Trainees
             .Where(t =>
-                t.FirstName.ToLower().Contains(searchParam.ToLower()) ||
-                t.LastName.ToLower().Contains(searchParam.ToLower()) ||
-                t.Email.ToLower().Contains(searchParam.ToLower()) ||
-                t.TechStack.ToLower().Contains(searchParam.ToLower())
+                t.FirstName.ToLower().Contains(searchParamLower) ||
+                t.LastName.ToLower().Contains(searchParamLower) ||
+                t.Email.ToLower().Contains(searchParamLower) ||
+                t.TechStack.ToLower().Contains(searchParamLower)
             )
             .ToListAsync();
     }
@@ -51,12 +53,15 @@ public class TraineeRepository : ITraineeRepository
     public async Task DeleteById(TraineeModel trainee)
     {
         _appDbContext.Trainees.Remove(trainee);
-        _appDbContext.SaveChanges();
+        await _appDbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
+    public async Task<TraineeModel> UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
     {
         TraineeModel trainee = await _appDbContext.Trainees.FindAsync(id);
+
+        if (trainee == null)
+            return null;
 
         trainee.FirstName = updateTraineeDto.FirstName;
         trainee.LastName = updateTraineeDto.LastName;
@@ -67,6 +72,7 @@ public class TraineeRepository : ITraineeRepository
         // update updated at timestamp
         trainee.UpdatedAt = DateTime.UtcNow;
         await _appDbContext.SaveChangesAsync();
+        return trainee;
     }
 
 }

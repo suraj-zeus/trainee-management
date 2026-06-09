@@ -16,7 +16,7 @@ namespace Trainee.api.Controllers
             {
                 status = "running",
                 application = "Training Management api",
-                timestamp = DateTime.Now
+                timestamp = DateTime.UtcNow
             });
         }
     }

@@ -82,11 +82,10 @@ public class TraineeService : ITraineeService
 
     public async Task<TraineeResponseDto> UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
     {
-        TraineeModel trainee = await _traineeRepository.GetById(id);
-        if (trainee == null)
-            return null;
+        TraineeModel trainee = await _traineeRepository.UpdateTraineeById(updateTraineeDto, id);
 
-        await _traineeRepository.UpdateTraineeById(updateTraineeDto, id);
+        if(trainee == null) 
+            return null;
 
         return MapTraineeModelToTraineeResponseDto(trainee);
     }

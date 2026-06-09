@@ -20,6 +20,6 @@ public interface ITraineeRepository
 
     public Task DeleteById(TraineeModel traineeModel);
 
-    public Task UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id);
+    public Task<TraineeModel> UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id);
 
 }
