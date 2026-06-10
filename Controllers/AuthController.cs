@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Trainee.api.dto;
+using Trainee.api.Services;
 
 
 namespace Trainee.api.Controllers
@@ -12,12 +13,25 @@ namespace Trainee.api.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult Login(UserLoginRequestDto userLoginRequestDto)
-        {
 
+
+        private AuthService _authService;
+
+        public AuthController(AuthService authService)
+        {
+            _authService = authService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
+        {
             
-            return Ok();
+            if(await _authService.IsValidUser(userLoginRequestDto))
+            {
+                return Ok(new {Token = "token"});
+            }
+
+            return Unauthorized();
         }
     }
 }

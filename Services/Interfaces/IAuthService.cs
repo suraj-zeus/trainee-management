@@ -8,5 +8,7 @@ namespace Trainee.api.Services;
 
 public interface IAuthService
 {
-    public void LoginService(UserLoginRequestDto userLoginRequestDto);
+    // public Task<string> LoginService(UserLoginRequestDto userLoginRequestDto);
+
+    public Task<bool> IsValidUser(UserLoginRequestDto userLoginRequestDto);
 }

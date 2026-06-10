@@ -50,6 +50,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //     );
 
 
+// builder.Services.AddAuthorization();
+
 
 // add controllers
 builder.Services.AddControllers(options =>
@@ -61,6 +63,8 @@ builder.Services.AddControllers(options =>
 // add dependency injection config for service layer and repo layer
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // openapi (swagger) config
 builder.Services.AddOpenApiDocument(config =>
