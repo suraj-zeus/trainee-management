@@ -2,13 +2,20 @@
 # Trainee Management API
 
 ## Technology Used
-- dotnet - to create all apis
-- ef core - for in memory database
+- dotnet - to create all the apis
+- mysql - to store trainees data 
+
+## requirements
+- Must have dotnet (version 10) installed on the system to run this project
+- Must have mysql (preferably version 8 onwards) installed 
 
 ## How to Run
 - Download the project folder
-- Open the project folder in any IDE
-- Open terminal, go to root project folder path and run this command 'dotnet run'
+- Open this project folder in any IDE
+- Update the mysql database connection string details in appsettings.json
+- Open terminal, go to root project folder path and run this command 'dotnet restore' to restore all the required packages 
+- Run 'dotnet ef migrations add InitialCreate' and 'dotnet ef database update' command for database migrations
+- Run 'dotnet run' command to run the project
 - To test the apis, go to this url http://localhost:port/swagger/index.html
 
 ## Features Completed
@@ -46,8 +53,7 @@ Working API endpoints:
     - Valid ID 200 OK
     - Invalid ID 404 Not Found
 
-## requirements
-- Must have dotnet installed on the system to run this projects
+
 
 
 ## Sample Request JSON
@@ -132,5 +138,4 @@ Sample PUT /api/trainees/{id} response:
 - While installing and setting up swagger in the current project for testing apis
 
 ## Limitations
-- It currently uses In Memory database which holds data temporarily. It lacks real Sql/No Sql database connection.
 - Absence of authentication and authorisation
