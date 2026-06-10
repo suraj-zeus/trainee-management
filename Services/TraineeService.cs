@@ -51,7 +51,7 @@ public class TraineeService : ITraineeService
 
     public async Task<TraineeResponseDto> AddTrainee(CreateTraineeDto createTraineeDto)
     {
-        TraineeModel trainee = new()
+        TraineeModel trainee = new ()
         {
             FirstName = createTraineeDto.FirstName,
             LastName = createTraineeDto.LastName,

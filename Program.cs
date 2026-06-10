@@ -1,8 +1,9 @@
 using NSwag.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Microsoft.EntityFrameworkCore;
+
 using Trainee.api.Services;
 using Trainee.api.DatabaseContext;
-using Microsoft.EntityFrameworkCore;
 using Trainee.api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,13 @@ builder.Services.AddControllers(options =>
     options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
 });
 
-// in memory db config
-builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TraineeManagementDb"));
+// db config
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+Console.WriteLine(connectionString);
+ 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)).LogTo(Console.WriteLine, LogLevel.Information));
 
 // add dependency injection config for service layer and repo layer
 builder.Services.AddScoped<ITraineeService, TraineeService>();
