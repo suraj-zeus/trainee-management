@@ -15,9 +15,9 @@ namespace Trainee.api.Controllers
     {
 
 
-        private AuthService _authService;
+        private IAuthService _authService;
 
-        public AuthController(AuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
