@@ -35,7 +35,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173/", "http://localhost:3000/");
+                          policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
                       });
 });
 
@@ -141,6 +143,7 @@ using (var scope = app.Services.CreateAsyncScope())
 }
 
 // cors
+app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);
 
 // default controller
