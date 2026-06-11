@@ -17,7 +17,7 @@
 - Run 'dotnet ef migrations add InitialCreate' and 'dotnet ef database update' command for database migrations
 - Run 'dotnet run' command to run the project
 - To test the apis, go to this url http://localhost:port/swagger/index.html
-- By default one admin data is seeded after running the project for the first time, so login as an admin to access all the protected apis with these creadentials : {username : 'admin', password : 'admin@123'}
+- By default one admin data is seeded after running the project for the first time, so login as an admin to access all the protected apis with these credentials : {username : 'admin', password : 'admin@123'}
 
 ## Features Completed
 Working API endpoints:
