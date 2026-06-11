@@ -90,7 +90,7 @@ public class TraineeService : ITraineeService
         return MapTraineeModelToTraineeResponseDto(trainee);
     }
 
-    public TraineeResponseDto MapTraineeModelToTraineeResponseDto(TraineeModel traineeModel) {
+    private TraineeResponseDto MapTraineeModelToTraineeResponseDto(TraineeModel traineeModel) {
 
         TraineeResponseDto traineeResponseDto = new()
         {

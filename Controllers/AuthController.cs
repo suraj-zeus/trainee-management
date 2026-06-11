@@ -26,12 +26,14 @@ namespace Trainee.api.Controllers
         public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
         {
             
-            if(await _authService.IsValidUser(userLoginRequestDto))
+            UserLoginResponseDto userLoginResponseDto = await _authService.LoginService(userLoginRequestDto);
+
+            if(userLoginResponseDto == null)
             {
-                return Ok(new {Token = "token"});
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            return Ok(userLoginResponseDto);
         }
     }
 }
