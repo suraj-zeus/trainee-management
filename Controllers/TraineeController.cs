@@ -19,11 +19,13 @@ namespace Trainee.api.Controllers
     {
 
         private readonly ITraineeService _traineeService;
+        private readonly ILogger<TraineesController> _logger;
 
         // The DI container automatically resolves and provides IUserService here
-        public TraineesController(ITraineeService traineeService)
+        public TraineesController(ITraineeService traineeService, ILogger<TraineesController> logger)
         {
             _traineeService = traineeService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -39,8 +41,10 @@ namespace Trainee.api.Controllers
         {
             TraineeResponseDto trainee = await _traineeService.GetTraineeById(id);
 
-            if (trainee == null)
-                return NotFound(new { Message = $"Trainee with ID {id} was not found." });
+            if (trainee == null) {
+                _logger.LogInformation($"The requested user record with ID : {id} was not found");
+                return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
+            }
 
             return Ok(trainee);
         }
@@ -50,9 +54,12 @@ namespace Trainee.api.Controllers
         {
             bool deleted = await _traineeService.DeleteTraineeById(id);
 
-            if (!deleted)
-                return NotFound(new { Message = $"Trainee with ID {id} was not found." });
+            if (!deleted) {
+                _logger.LogInformation($"The requested user record with ID : {id} was not found");
+                return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
+            }
 
+            _logger.LogInformation($"The user record with ID : {id} deleted successfully");
             return NoContent();
         }
 
@@ -62,6 +69,7 @@ namespace Trainee.api.Controllers
 
             TraineeResponseDto trainee = await _traineeService.AddTrainee(createTraineeDto);
 
+            _logger.LogInformation($"The user record with ID : {trainee.Id} created successfully");
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = trainee.Id },
@@ -79,9 +87,11 @@ namespace Trainee.api.Controllers
 
             if (trainee == null)
             {
-                return NotFound(new { Message = $"Trainee with ID {id} was not found." });
+                _logger.LogInformation($"The requested user record with ID : {id} was not found");
+                return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
+            _logger.LogInformation($"The user record with ID : {id} updated successfully");
             return Ok(trainee);
         }
 

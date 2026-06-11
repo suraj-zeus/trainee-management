@@ -16,10 +16,12 @@ namespace Trainee.api.Controllers
 
 
         private IAuthService _authService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -30,9 +32,11 @@ namespace Trainee.api.Controllers
 
             if(userLoginResponseDto == null)
             {
+                _logger.LogError($"Login attempt failed for user with username : {userLoginRequestDto.Username}");
                 return BadRequest();
             }
 
+            _logger.LogInformation($"User with username : {userLoginRequestDto.Username} logged in successfully!");
             return Ok(userLoginResponseDto);
         }
     }

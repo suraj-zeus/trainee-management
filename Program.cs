@@ -27,6 +27,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 
+// cors configs
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173/", "http://localhost:3000/");
+                      });
+});
+
+
+// logging configs
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 
 // authentication config
 builder.Services
@@ -56,14 +74,13 @@ builder.Services.AddAuthorization();
 
 // add controllers
 builder.Services.AddControllers(options =>
-        {
-            options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
-        }
-    ).AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        }
-    );;
+{
+    options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+}).AddJsonOptions(options =>
+{
+    // consider enum as string
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 
 // add dependency injection config for service layer and repo layer
@@ -123,6 +140,8 @@ using (var scope = app.Services.CreateAsyncScope())
     }
 }
 
+// cors
+app.UseCors(MyAllowSpecificOrigins);
 
 // default controller
 app.MapGet("/", () => "Hello World!");
