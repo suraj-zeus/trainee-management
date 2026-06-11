@@ -14,7 +14,6 @@ namespace Trainee.api.Services;
 public class AuthService : IAuthService
 {
 
-
     private IUserRepository _userRepository;
     private readonly PasswordHasher<UserModel> _passwordHasher;
     private IConfiguration _configuration;

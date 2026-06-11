@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-// using Microsoft.AspNetCore.Authentication.JwtBearer;
-// using Microsoft.IdentityModel.Tokens;
-// using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
 
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 using Trainee.api.Services;
 using Trainee.api.DatabaseContext;
@@ -14,7 +17,6 @@ using Trainee.api.Repositories;
 using Trainee.api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 
 // db config
@@ -27,37 +29,41 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 // authentication config
-// builder.Services
-//     .AddAuthentication(options =>
-//         {
-//             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//         }
-//     )
-//     .AddJwtBearer(options =>
-//         {
-//             options.TokenValidationParameters = new TokenValidationParameters
-//             {
-//                 ValidateIssuer = true,
-//                 ValidateAudience = true,
-//                 ValidateLifetime = true,
-//                 ValidateIssuerSigningKey = true,
-//                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
-//                 ValidAudience = builder.Configuration["Jwt:Audience"],
-//                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-//             };
-//         }
-//     );
+builder.Services
+    .AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }
+    )
+    .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+            };
+        }
+    );
 
-
-// builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 
 
 // add controllers
 builder.Services.AddControllers(options =>
-{
-    options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
-});
+        {
+            options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+        }
+    ).AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        }
+    );;
 
 
 // add dependency injection config for service layer and repo layer
@@ -68,10 +74,22 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // openapi (swagger) config
 builder.Services.AddOpenApiDocument(config =>
-{
-    config.DocumentName = "v1";
-    config.Title = "Training Management Apis";
-});
+    {
+        config.DocumentName = "v1";
+        config.Title = "Training Management Apis";
+
+        // add  jwt secuity options in swagger
+        config.AddSecurity("JWT", new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            Name = "Authorization",
+            In = OpenApiSecurityApiKeyLocation.Header,
+            Description = "Add jwt token for protected routes in this format : Bearer <jwt_token>"
+        });
+
+        config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+    }
+);
 
 
 var app = builder.Build();
@@ -106,11 +124,13 @@ using (var scope = app.Services.CreateAsyncScope())
 }
 
 
-
+// default controller
 app.MapGet("/", () => "Hello World!");
 
-
+// security
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseHttpsRedirection();
 app.MapControllers();
 

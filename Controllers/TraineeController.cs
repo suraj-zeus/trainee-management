@@ -1,13 +1,18 @@
 
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using Trainee.api.dto;
 using Trainee.api.Services;
+using Trainee.api.Dto;
+
 
 namespace Trainee.api.Controllers
 {
 
+
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TraineesController : ControllerBase
@@ -22,13 +27,11 @@ namespace Trainee.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TraineeResponseDto>>> GetAll(string? search)
+        public async Task<ActionResult<PaginationResponseDto<TraineeResponseDto>>> GetAll([FromQuery] PaginationQueryDto paginationQueryDto)
         {
-            List<TraineeResponseDto> trainees = !string.IsNullOrEmpty(search)
-                                        ? await _traineeService.GetAllTraineesWithSeachParam(search)
-                                        : await _traineeService.GetAllTrainees();
+            PaginationResponseDto<TraineeResponseDto> paginatedResult = await _traineeService.GetPaginatedTrainees(paginationQueryDto);
 
-            return Ok(trainees);
+            return Ok(paginatedResult);
         }
 
         [HttpGet("{id}")]
@@ -37,7 +40,7 @@ namespace Trainee.api.Controllers
             TraineeResponseDto trainee = await _traineeService.GetTraineeById(id);
 
             if (trainee == null)
-                return NotFound(new {Message = $"Trainee with ID {id} was not found."});
+                return NotFound(new { Message = $"Trainee with ID {id} was not found." });
 
             return Ok(trainee);
         }
@@ -48,7 +51,7 @@ namespace Trainee.api.Controllers
             bool deleted = await _traineeService.DeleteTraineeById(id);
 
             if (!deleted)
-                return NotFound(new {Message = $"Trainee with ID {id} was not found."});
+                return NotFound(new { Message = $"Trainee with ID {id} was not found." });
 
             return NoContent();
         }
@@ -76,7 +79,7 @@ namespace Trainee.api.Controllers
 
             if (trainee == null)
             {
-                return NotFound(new {Message = $"Trainee with ID {id} was not found."});
+                return NotFound(new { Message = $"Trainee with ID {id} was not found." });
             }
 
             return Ok(trainee);

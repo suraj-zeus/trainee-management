@@ -30,7 +30,7 @@ namespace Trainee.api.Controllers
 
             if(userLoginResponseDto == null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
             return Ok(userLoginResponseDto);

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Trainee.api.DatabaseContext;
 using Trainee.api.dto;
 using Trainee.api.Models;
@@ -36,6 +37,44 @@ public class TraineeRepository : ITraineeRepository
             )
             .ToListAsync();
     }
+
+    public async Task<(int,  List<TraineeModel>)> GetPaginatedTrainees(PaginationQueryDto paginationQueryDto)
+    {
+        string statusParam = paginationQueryDto.Status;
+        string searchParamLower = string.IsNullOrEmpty(paginationQueryDto.Search) 
+                                    ? "" 
+                                    : paginationQueryDto.Search.ToLower();
+
+        var query = _appDbContext.Trainees.AsNoTracking();
+
+        // filter based on search param 
+        if(!string.IsNullOrEmpty(searchParamLower)) {
+            query = query
+                        .Where(t =>
+                            t.FirstName.ToLower().Contains(searchParamLower) ||
+                            t.LastName.ToLower().Contains(searchParamLower) ||
+                            t.Email.ToLower().Contains(searchParamLower) ||
+                            t.TechStack.ToLower().Contains(searchParamLower)
+                        );
+        }
+
+        // filter based on status
+        if(!string.IsNullOrEmpty(statusParam)) {
+            query = query.Where(t => t.Status == statusParam);
+        }
+
+        int totalRecords = await query.CountAsync();
+
+        List<TraineeModel> trainees  = await query
+                                            .OrderBy(t => t.Id)
+                                            .Skip((paginationQueryDto.PageNumber - 1) * paginationQueryDto.PageSize)
+                                            .Take(paginationQueryDto.PageSize)
+                                            .ToListAsync();
+
+        return (totalRecords, trainees);
+    }
+
+
 
     public async Task<TraineeModel> GetById(int id)
     {

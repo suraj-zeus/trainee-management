@@ -1,5 +1,6 @@
 
 using Trainee.api.dto;
+using Trainee.api.Dto;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
 
@@ -26,6 +27,18 @@ public class TraineeService : ITraineeService
         }
 
         return traineesResponse;
+    }
+
+    public async Task<PaginationResponseDto<TraineeResponseDto>> GetPaginatedTrainees(PaginationQueryDto paginationQueryDto)
+    {
+        var (totalRecords, trainees) = await _traineeRepository.GetPaginatedTrainees(paginationQueryDto);
+        List<TraineeResponseDto> traineesResponse =  new List<TraineeResponseDto>();
+
+        foreach(TraineeModel trainee in trainees) {
+            traineesResponse.Add(MapTraineeModelToTraineeResponseDto(trainee));
+        }
+
+        return MapToPaginatedTraineeResponse(traineesResponse, paginationQueryDto, totalRecords);
     }
 
     public async Task<List<TraineeResponseDto>> GetAllTraineesWithSeachParam(string searchParam)
@@ -89,6 +102,21 @@ public class TraineeService : ITraineeService
 
         return MapTraineeModelToTraineeResponseDto(trainee);
     }
+
+
+    private PaginationResponseDto<TraineeResponseDto> MapToPaginatedTraineeResponse(List<TraineeResponseDto> traineesResponse, PaginationQueryDto paginationQueryDto, int totalRecords)
+    {
+        PaginationResponseDto<TraineeResponseDto> paginatedResponse = new ()
+        {
+            PageNumber = paginationQueryDto.PageNumber,
+            PageSize = paginationQueryDto.PageSize,
+            TotalRecords = totalRecords,
+            Data = traineesResponse
+        };
+
+        return paginatedResponse;
+    }
+
 
     private TraineeResponseDto MapTraineeModelToTraineeResponseDto(TraineeModel traineeModel) {
 
