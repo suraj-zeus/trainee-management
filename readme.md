@@ -17,6 +17,7 @@
 - Run 'dotnet ef migrations add InitialCreate' and 'dotnet ef database update' command for database migrations
 - Run 'dotnet run' command to run the project
 - To test the apis, go to this url http://localhost:port/swagger/index.html
+- By default one admin data is seeded after running the project for the first time, so login as an admin to access all the protected apis with these creadentials : {username : 'admin', password : 'admin@123'}
 
 ## Features Completed
 Working API endpoints:
@@ -26,9 +27,14 @@ Working API endpoints:
 - POST /api/trainees
 - PUT /api/trainees/{id}
 - DELETE /api/trainees/{id}
+- POST /api/auth/login
 
 
 ## api endpoints and expected response for each api
+
+- POST /api/auth/login
+    - Valid login credentials 200 OK
+    - Invalid creadentials 400 Bad Request
 
 - PUT /api/trainees/{id}
     - Valid trainee ID 200 OK
@@ -57,6 +63,15 @@ Working API endpoints:
 
 
 ## Sample Request JSON
+
+Sample POST /api/auth/login request :
+
+    {
+        "username": "admin",
+        "password": "admin@123"
+    }
+
+
 Sample POST /api/trainees request:
 
     {
@@ -78,20 +93,79 @@ Sample PUT /api/trainees/1 request:
     }
  
 ## Sample Response JSON
+
+Sample POST /api/auth/login response :
+
+    {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJUcmFpbmVlTWFuYWdlbWVudENsaWVudCIsImlzcyI6IlRyYWluZWVNYW5hZ2VtZW50QXBpIiwiZXhwIjoxNzgxMTgwMjM5LCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImlhdCI6MTc4MTE3NjYzOSwibmJmIjoxNzgxMTc2NjM5fQ.30SeusEa2rkDd5-EueaMwXn4uixhwKW4Z4rIADf5Mck",
+        "expiresIn": "60",
+        "user": {
+            "id": 1,
+            "username": "admin",
+            "role": "Admin"
+        }
+    }
+
+
 Sample GET /api/trainees response:
 
-    [
-        {
-            "id": 1,
-            "firstName": "john",
-            "lastName": "doe",
-            "email": "john.doe@training.com",
-            "techStack": "HTML, CSS, JavaScript",
-            "status": "Active",
-            "createdDate": "2026-06-08T10:55:05.7288647+00:00",
-            "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
-        }
-    ]
+    {
+        "pageNumber": 1,
+        "pageSize": 5,
+        "totalRecords": 17,
+        "data": [
+            {
+                "id": 1,
+                "firstName": "akash",
+                "lastName": "prajapati",
+                "email": "akash@gmail.com",
+                "techStack": "java",
+                "status": "Active",
+                "createdAt": "2026-06-10T11:23:25.692974",
+                "updatedAt": "2026-06-10T11:23:25.69299"
+            },
+            {
+                "id": 2,
+                "firstName": "Suraj",
+                "lastName": "Prajapati",
+                "email": "suraj@gmail.com",
+                "techStack": "MERN",
+                "status": "Inactive",
+                "createdAt": "2026-06-11T08:56:56.104701",
+                "updatedAt": "2026-06-11T10:35:35.153876"
+            },
+                {
+                "id": 3,
+                "firstName": "Priya",
+                "lastName": "Sharma",
+                "email": "priya.s@example.com",
+                "techStack": "DotNet",
+                "status": "Active",
+                "createdAt": "2026-06-11T08:57:09.270786",
+                "updatedAt": "2026-06-11T08:57:09.270787"
+            },
+            {
+                "id": 4,
+                "firstName": "Amit",
+                "lastName": "Verma",
+                "email": "amit.v@example.com",
+                "techStack": "Python",
+                "status": "Inactive",
+                "createdAt": "2026-06-11T08:57:19.07379",
+                "updatedAt": "2026-06-11T08:57:19.07379"
+            },
+            {
+                "id": 5,
+                "firstName": "Sonia",
+                "lastName": "Bose",
+                "email": "sonia.b@example.com",
+                "techStack": "AWS",
+                "status": "Inactive",
+                "createdAt": "2026-06-11T08:57:36.226802",
+                "updatedAt": "2026-06-11T08:57:36.226803"
+            }
+        ]
+    }
  
 Sample POST /api/trainees response:
 
@@ -136,6 +210,9 @@ Sample PUT /api/trainees/{id} response:
 ## Challanges faced
 - While installing dotnet packages and setting up initial web project in dotnet
 - While installing and setting up swagger in the current project for testing apis
+- While establishing connection to mysql database and running database migration command
 
 ## Limitations
-- Absence of authentication and authorisation
+- .env file not added
+- Absence of role based authorisation 
+- Absence of exception handlers 
