@@ -6,7 +6,6 @@ namespace Trainee.api.dto;
 
 public class PaginationQueryDto
 {
-   
     [Range(1, int.MaxValue, ErrorMessage = "Page number must be 1 or greater.")]
     public int PageNumber { get; set; } = 1;
 

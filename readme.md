@@ -18,6 +18,7 @@
 - Run 'dotnet run' command to run the project
 - To test the apis, go to this url http://localhost:port/swagger/index.html
 - By default one admin data is seeded after running the project for the first time, so login as an admin to access all the protected apis with these credentials : {username : 'admin', password : 'admin@123'}
+- Add the jwt token to http request header in this format : {Bearer <jwt_token>} to access protected api routes
 
 ## Features Completed
 Working API endpoints:
@@ -28,6 +29,17 @@ Working API endpoints:
 - PUT /api/trainees/{id}
 - DELETE /api/trainees/{id}
 - POST /api/auth/login
+- GET /api/mentors
+- GET /api/mentors/{id} 
+- POST /api/mentors
+- PUT /api/mentors/{id}
+- DELETE /api/mentors/{id}
+- GET /api/learning-tasks
+- GET /api/learning-tasks/{id} 
+- POST /api/learning-tasks
+- PUT /api/learning-tasks/{id}
+- DELETE /api/learning-tasks/{id}
+
 
 
 ## api endpoints and expected response for each api
@@ -59,6 +71,46 @@ Working API endpoints:
     - Valid ID 200 OK
     - Invalid ID 404 Not Found
 
+- GET /api/mentors
+    - 200 OK
+
+- GET /api/mentors/{id} 
+    - Valid ID 200 OK
+    - Invalid ID 404 Not Found
+
+- POST /api/mentors
+    - Valid data 201 Created
+    - Invalid data 400 Bad Request
+
+- PUT /api/mentors/{id}
+    - Valid ID 200 OK
+    - Invalid ID 404 Not Found
+    - Invalid request 400 Bad Request
+
+- DELETE /api/mentors/{id}
+    - Valid ID 204 No Content
+    - Invalid ID 404 Not Found
+
+- GET /api/learning-tasks
+    - 200 OK
+
+- GET /api/learning-tasks/{id}
+    - Valid ID 200 OK
+    - Invalid ID 404 Not Found
+
+- POST /api/learning-tasks
+    - Valid data 201 Created
+    - Invalid data 400 Bad Request
+
+- PUT /api/learning-tasks/{id}
+    - Valid ID 200 OK
+    - Invalid ID 404 Not Found
+    - Invalid request 400 Bad Request
+
+- DELETE /api/learning-tasks/{id}
+    - Valid ID 204 No Content
+    - Invalid ID 404 Not Found
+
 
 
 
@@ -82,7 +134,7 @@ Sample POST /api/trainees request:
         "status": "Active"
     }
  
-Sample PUT /api/trainees/1 request:
+Sample PUT /api/trainees/{id} request:
 
     {  
         "firstName": "john",
@@ -91,6 +143,53 @@ Sample PUT /api/trainees/1 request:
         "techStack": "Java",
         "status": "InActive"
     }
+
+
+Sample POST /api/mentors request:
+
+    {
+        "firstName": "Hiroshi",
+        "lastName": "Tanaka",
+        "email": "h.tanaka@systems.jp",
+        "expertise": "DevOps Engineering",
+        "status": "Active"
+    }
+
+
+Sample PUT /api/mentors/{id} request:
+
+    {
+        "firstName": "Hiroshi",
+        "lastName": "Tanaka",
+        "email": "h.tanaka@systems.jp",
+        "expertise": "Java Fullstack",
+        "status": "Inactive"
+    }
+
+ 
+Sample POST /api/learning-tasks request:
+
+    {
+        "title": "frontend ",
+        "description": "to complete frontend design",
+        "expectedTechStack": "react",
+        "dueDate": "2026-06-12",
+        "status": "Draft"
+    }
+
+
+Sample PUT /api/learning-tasks/{id} request:
+
+    {
+        "title": "frontend",
+        "description": "to complete frontend design",
+        "expectedTechStack": "react",
+        "dueDate": "2026-06-12",
+        "status": "Closed"
+    }
+
+
+
  
 ## Sample Response JSON
 
@@ -107,7 +206,7 @@ Sample POST /api/auth/login response :
     }
 
 
-Sample GET /api/trainees response:
+Sample GET /api/trainees response :
 
     {
         "pageNumber": 1,
@@ -166,6 +265,7 @@ Sample GET /api/trainees response:
             }
         ]
     }
+
  
 Sample POST /api/trainees response:
 
@@ -181,6 +281,7 @@ Sample POST /api/trainees response:
         "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
     }
     
+
 Sample GET /api/trainees/{id} response:
 
     {
@@ -193,6 +294,7 @@ Sample GET /api/trainees/{id} response:
         "createdDate": "2026-06-08T10:55:05.7288647+00:00",
         "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
     }
+
  
 Sample PUT /api/trainees/{id} response:
 
@@ -206,6 +308,146 @@ Sample PUT /api/trainees/{id} response:
         "createdDate": "2026-06-08T10:55:05.7288647+00:00",
         "updatedDate": "2026-06-08T10:57:22.9859447+00:00"
     }
+
+
+
+Sample GET /api/learning-tasks response :
+
+    [
+        {
+            "id": 1,
+            "title": "frontend ",
+            "description": "to complete frontend design",
+            "expectedTechStack": "react",
+            "dueDate": "2026-06-12T00:00:00",
+            "status": "Closed",
+            "createdDate": "2026-06-12T10:19:58.705764",
+            "updatedDate": "2026-06-12T10:26:07.749961"
+        },
+        {
+            "id": 2,
+            "title": "frontend design",
+            "description": "to complete frontend design",
+            "expectedTechStack": "java",
+            "dueDate": "2026-06-12T00:00:00",
+            "status": "Draft",
+            "createdDate": "2026-06-12T10:20:35.893474",
+            "updatedDate": "2026-06-12T10:20:35.893474"
+        }
+    ]
+
+
+Sample GET /api/learning-tasks/{id} response : 
+
+    {
+        "id": 2,
+        "title": "frontend design",
+        "description": "to complete frontend design",
+        "expectedTechStack": "java",
+        "dueDate": "2026-06-12T00:00:00",
+        "status": "Draft",
+        "createdDate": "2026-06-12T10:20:35.893474",
+        "updatedDate": "2026-06-12T10:20:35.893474"
+    }
+
+
+Sample POST /api/learning-tasks response :
+
+    {
+        "id": 2,
+        "title": "frontend design",
+        "description": "to complete frontend design",
+        "expectedTechStack": "java",
+        "dueDate": "2026-06-12T00:00:00",
+        "status": "Draft",
+        "createdDate": "2026-06-12T10:20:35.893474",
+        "updatedDate": "2026-06-12T10:20:35.893474"
+    }
+
+Sample /api/learning-tasks/{id} response :
+
+    {
+        "id": 2,
+        "title": "frontend design",
+        "description": "to complete frontend design",
+        "expectedTechStack": "java",
+        "dueDate": "2026-06-12T00:00:00",
+        "status": "Closed",
+        "createdDate": "2026-06-12T10:20:35.893474",
+        "updatedDate": "2026-06-12T10:20:35.893474"
+    }
+
+
+Sample GET /api/mentors response :
+
+    [
+        {
+            "id": 8,
+            "firstName": "Marcus",
+            "lastName": "Chen",
+            "email": "m.chen@techcorp.com",
+            "expertise": "Cloud Architecture",
+            "status": "Active",
+            "createdDate": "2026-06-12T08:51:02.126754",
+            "updatedDate": "2026-06-12T08:51:02.126754"
+        },
+        {
+            "id": 9,
+            "firstName": "Elena",
+            "lastName": "Rodriguez",
+            "email": "elena.rodriguez@designhub.io",
+            "expertise": "UI/UX Design",
+            "status": "Active",
+            "createdDate": "2026-06-12T08:51:11.363087",
+            "updatedDate": "2026-06-12T08:51:11.363087"
+        }
+    ]
+
+
+Sample GET /api/mentors/{id} response : 
+
+    {
+        "id": 9,
+        "firstName": "Elena",
+        "lastName": "Rodriguez",
+        "email": "elena.rodriguez@designhub.io",
+        "expertise": "UI/UX Design",
+        "status": "Active",
+        "createdDate": "2026-06-12T08:51:11.363087",
+        "updatedDate": "2026-06-12T08:51:11.363087"
+    }
+
+Sample POST /api/mentors response :
+
+    {
+        "id": 9,
+        "firstName": "Elena",
+        "lastName": "Rodriguez",
+        "email": "elena.rodriguez@designhub.io",
+        "expertise": "UI/UX Design",
+        "status": "Active",
+        "createdDate": "2026-06-12T08:51:11.363087",
+        "updatedDate": "2026-06-12T08:51:11.363087"
+    }
+
+
+
+Sample PUT /api/mentors/{id} response :
+
+    {
+        "id": 9,
+        "firstName": "Elena",
+        "lastName": "Rodriguez",
+        "email": "elena.rodriguez@designhub.io",
+        "expertise": "UI/UX Design",
+        "status": "Inactive",
+        "createdDate": "2026-06-12T08:51:11.363087",
+        "updatedDate": "2026-06-12T08:51:11.363087"
+    }
+
+
+
+
 
 ## Challanges faced
 - While installing dotnet packages and setting up initial web project in dotnet
