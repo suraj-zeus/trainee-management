@@ -1,13 +1,14 @@
 
+
+
+
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Trainee.api.dto;
 
 
-
-
-
-public class UpdateTraineeDto {
+public class UpdateMentorDto {
 
 
     [Required(ErrorMessage = "First name is required")]
@@ -25,12 +26,12 @@ public class UpdateTraineeDto {
     public string Email {get; set;} = string.Empty;
 
 
-    [Required(ErrorMessage = "Techstack is required")]
-    public string TechStack {get; set;} = string.Empty;
+    [Required(ErrorMessage = "Expertise is required")]
+    public string Expertise {get; set;} = string.Empty;
 
 
     [Required(ErrorMessage = "Status is required")]
-    [EnumDataType(typeof(TraineeStatus), ErrorMessage = "Invalid Status. Allowed values are: Active, Inactive, and Completed")]
+    [EnumDataType(typeof(MentorStatus), ErrorMessage = "Invalid Status. Allowed values are: Active and Inactive")]
     public string Status {get; set;} = string.Empty;
 
 

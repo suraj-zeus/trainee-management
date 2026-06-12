@@ -15,7 +15,7 @@ public class PaginationQueryDto
 
     public string? Search { get; set; }
 
-    [EnumDataType(typeof(Status), ErrorMessage = "Invalid Status. Allowed values are: Active, Inactive, and Completed")]
+    [EnumDataType(typeof(TraineeStatus), ErrorMessage = "Invalid Status. Allowed values are: Active, Inactive, and Completed")]
     public string? Status { get; set; }
 
 }

@@ -34,7 +34,7 @@ Working API endpoints:
 
 - POST /api/auth/login
     - Valid login credentials 200 OK
-    - Invalid creadentials 400 Bad Request
+    - Invalid credentials 400 Bad Request
 
 - PUT /api/trainees/{id}
     - Valid trainee ID 200 OK

@@ -24,6 +24,7 @@ namespace Trainee.api.Controllers
             _logger = logger;
         }
 
+        [Route("login")]
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
         {

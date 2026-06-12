@@ -42,7 +42,7 @@ namespace Trainee.api.Controllers
             TraineeResponseDto trainee = await _traineeService.GetTraineeById(id);
 
             if (trainee == null) {
-                _logger.LogInformation($"The requested user record with ID : {id} was not found");
+                _logger.LogInformation($"The requested trainee record with ID : {id} was not found");
                 return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
@@ -55,11 +55,11 @@ namespace Trainee.api.Controllers
             bool deleted = await _traineeService.DeleteTraineeById(id);
 
             if (!deleted) {
-                _logger.LogInformation($"The requested user record with ID : {id} was not found");
+                _logger.LogInformation($"The requested trainee record with ID : {id} was not found");
                 return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"The user record with ID : {id} deleted successfully");
+            _logger.LogInformation($"The trainee record with ID : {id} deleted successfully");
             return NoContent();
         }
 
@@ -69,7 +69,7 @@ namespace Trainee.api.Controllers
 
             TraineeResponseDto trainee = await _traineeService.AddTrainee(createTraineeDto);
 
-            _logger.LogInformation($"The user record with ID : {trainee.Id} created successfully");
+            _logger.LogInformation($"The trainee record with ID : {trainee.Id} created successfully");
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = trainee.Id },
@@ -87,11 +87,11 @@ namespace Trainee.api.Controllers
 
             if (trainee == null)
             {
-                _logger.LogInformation($"The requested user record with ID : {id} was not found");
+                _logger.LogInformation($"The requested trainee record with ID : {id} was not found");
                 return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"The user record with ID : {id} updated successfully");
+            _logger.LogInformation($"The trainee record with ID : {id} updated successfully");
             return Ok(trainee);
         }
 

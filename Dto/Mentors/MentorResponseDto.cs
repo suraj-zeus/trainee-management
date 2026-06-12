@@ -3,7 +3,8 @@
 
 namespace Trainee.api.dto;
 
-public class TraineeResponseDto {
+public class MentorResponseDto {
+   
     public int Id {get; set;}
 
     public string FirstName {get; set;} = string.Empty;
@@ -12,11 +13,12 @@ public class TraineeResponseDto {
 
     public string Email {get; set;} = string.Empty;
 
-    public string TechStack {get; set;} = string.Empty;
+    public string Expertise {get; set;} = string.Empty;
 
     public string Status {get; set;} = string.Empty;
 
     public DateTime CreatedDate {get; set;}
 
     public DateTime UpdatedDate {get; set;}
+    
 }

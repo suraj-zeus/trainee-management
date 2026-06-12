@@ -75,7 +75,6 @@ public class TraineeRepository : ITraineeRepository
     }
 
 
-
     public async Task<TraineeModel> GetById(int id)
     {
         TraineeModel trainee = await _appDbContext.Trainees.FindAsync(id);
@@ -109,7 +108,7 @@ public class TraineeRepository : ITraineeRepository
         trainee.Status = updateTraineeDto.Status;
 
         // update updated at timestamp
-        trainee.UpdatedAt = DateTime.UtcNow;
+        trainee.UpdatedDate = DateTime.UtcNow;
         await _appDbContext.SaveChangesAsync();
         return trainee;
     }

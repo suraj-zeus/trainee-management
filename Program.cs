@@ -47,6 +47,9 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
+// make apis route lowercase
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
 
 // authentication config
 builder.Services
@@ -86,10 +89,15 @@ builder.Services.AddControllers(options =>
 
 
 // add dependency injection config for service layer and repo layer
-builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ILearningTaskRepository, LearningTaskRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMentorRepository, MentorRepository>();
+
+builder.Services.AddScoped<ITraineeService, TraineeService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMentorService, MentorService>();
+builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 
 // openapi (swagger) config
 builder.Services.AddOpenApiDocument(config =>
@@ -128,8 +136,8 @@ using (var scope = app.Services.CreateAsyncScope())
             Email = "admin@gmail.com",
             PasswordHash = "",
             Role = "Admin",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow
         };
 
         var hasher = new PasswordHasher<UserModel>();

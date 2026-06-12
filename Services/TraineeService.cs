@@ -74,8 +74,8 @@ public class TraineeService : ITraineeService
         };
 
         // set timestamps
-        trainee.CreatedAt = DateTime.UtcNow;
-        trainee.UpdatedAt = DateTime.UtcNow;
+        trainee.CreatedDate = DateTime.UtcNow;
+        trainee.UpdatedDate = DateTime.UtcNow;
 
         await _traineeRepository.Add(trainee);
         return MapTraineeModelToTraineeResponseDto(trainee);
@@ -128,8 +128,8 @@ public class TraineeService : ITraineeService
             Email = traineeModel.Email,
             Status = traineeModel.Status,
             TechStack = traineeModel.TechStack,
-            CreatedAt = traineeModel.CreatedAt,
-            UpdatedAt = traineeModel.UpdatedAt
+            CreatedDate = traineeModel.CreatedDate,
+            UpdatedDate = traineeModel.UpdatedDate
         };
 
         return traineeResponseDto;
