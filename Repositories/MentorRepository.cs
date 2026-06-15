@@ -41,8 +41,6 @@ public class MentorRepository : IMentorRepository
         await _appDbContext.SaveChangesAsync();
     }
 
-
-
     public async Task<MentorModel> UpdateMentorById(UpdateMentorDto updateMentorDto, int id)
     {
         MentorModel mentor = await _appDbContext.Mentors.FindAsync(id);

@@ -19,4 +19,9 @@ public class MentorModel {
     public DateTime CreatedDate {get; set;}
 
     public DateTime UpdatedDate {get; set;}
+
+    public ICollection<TaskAssignmentModel> TaskAssignments { get; set; } = new List<TaskAssignmentModel>();
+
+    public ICollection<ReviewModel> Reviews { get; set; } = new List<ReviewModel>();
+
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainee.api.DatabaseContext;
 
@@ -11,9 +12,11 @@ using Trainee.api.DatabaseContext;
 namespace Trainee.api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260615095759_AddReviewAndSubmissionMigration")]
+    partial class AddReviewAndSubmissionMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,42 @@ namespace Trainee.api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("ReviewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Feedback")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("MentorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReviewedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Score")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MentorId");
+
+                    b.HasIndex("SubmissionId");
+
+                    b.ToTable("Reviews");
+                });
 
             modelBuilder.Entity("Trainee.api.Models.LearningTaskModel", b =>
                 {
@@ -97,43 +136,6 @@ namespace Trainee.api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Mentors");
-                });
-
-            modelBuilder.Entity("Trainee.api.Models.ReviewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Feedback")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("MentorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReviewedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Score")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("SubmissionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MentorId");
-
-                    b.HasIndex("SubmissionId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Trainee.api.Models.SubmissionModel", b =>
@@ -284,7 +286,7 @@ namespace Trainee.api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Trainee.api.Models.ReviewModel", b =>
+            modelBuilder.Entity("ReviewModel", b =>
                 {
                     b.HasOne("Trainee.api.Models.MentorModel", "Mentor")
                         .WithMany("Reviews")

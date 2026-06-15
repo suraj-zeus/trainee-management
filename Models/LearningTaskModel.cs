@@ -21,5 +21,6 @@ public class LearningTaskModel {
 
     public DateTime UpdatedDate {get; set;}
 
+    public ICollection<TaskAssignmentModel> TaskAssignments { get; set; } = new List<TaskAssignmentModel>();
    
 }

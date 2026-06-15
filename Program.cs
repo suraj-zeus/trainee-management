@@ -15,6 +15,7 @@ using Trainee.api.Services;
 using Trainee.api.DatabaseContext;
 using Trainee.api.Repositories;
 using Trainee.api.Models;
+using Trainee.api.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
+
+
+// exception handling 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(); 
 
 
 // cors configs
@@ -93,11 +99,18 @@ builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
 builder.Services.AddScoped<ILearningTaskRepository, LearningTaskRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMentorRepository, MentorRepository>();
+builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
+builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMentorService, MentorService>();
 builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
+builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
+builder.Services.AddScoped<ISubmissionService, SubmissionService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+
 
 // openapi (swagger) config
 builder.Services.AddOpenApiDocument(config =>
@@ -121,7 +134,8 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-
+// Use the exception handler
+app.UseExceptionHandler(); 
 
 // default admin data seeding
 using (var scope = app.Services.CreateAsyncScope())

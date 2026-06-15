@@ -1,5 +1,5 @@
 
-public enum AssignmentStatus
+public enum TaskAssignmentStatus
 {
     Assigned,
     InProgress,
