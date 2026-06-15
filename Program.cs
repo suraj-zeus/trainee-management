@@ -16,6 +16,7 @@ using Trainee.api.DatabaseContext;
 using Trainee.api.Repositories;
 using Trainee.api.Models;
 using Trainee.api.Exceptions;
+using Trainee.api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // exception handling 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails(); 
+
+// bind custom configurations
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.SectionName));
+
 
 
 // cors configs
@@ -58,6 +63,8 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 
 
 // authentication config
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
+
 builder.Services
     .AddAuthentication(options =>
         {
@@ -73,9 +80,9 @@ builder.Services
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                ValidAudience = builder.Configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)!)
             };
         }
     );

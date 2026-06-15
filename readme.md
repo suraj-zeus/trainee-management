@@ -20,6 +20,9 @@
 - By default one admin data is seeded after running the project for the first time, so login as an admin to access all the protected apis with these credentials : {username : 'admin', password : 'admin@123'}
 - Add the jwt token to http request header in this format : {Bearer <jwt_token>} to access protected api routes
 
+## Notes 
+- This application uses 'PBKDF2 with HMAC-SHA256' to hash the password which in by default provided by ASP.NET core. No external library is being used to hash the password
+
 ## Features Completed
 Working API endpoints:
 - GET /api/health

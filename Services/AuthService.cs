@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 using System.Text;
 
 using Trainee.api.dto;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
+using Trainee.api.Configurations;
 
 namespace Trainee.api.Services;
 
@@ -17,12 +19,18 @@ public class AuthService : IAuthService
     private IUserRepository _userRepository;
     private readonly PasswordHasher<UserModel> _passwordHasher;
     private IConfiguration _configuration;
+    private JwtConfig _jwtConfig;
 
-    public AuthService(IUserRepository userRepository, IConfiguration configuration)
+    public AuthService(
+        IUserRepository userRepository, 
+        IConfiguration configuration,
+        IOptions<JwtConfig> options
+    )
     {
         _userRepository = userRepository;
         _passwordHasher = new();
         _configuration = configuration;
+        _jwtConfig = options.Value;
     }
 
 
@@ -82,9 +90,9 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpiryMinutes"]!)),
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"],
+            Expires = DateTime.UtcNow.AddMinutes((double) _jwtConfig.ExpiryMinutes!),
+            Issuer = _jwtConfig.Issuer,
+            Audience = _jwtConfig.Audience,
             SigningCredentials = credentials
         };
 
@@ -110,7 +118,7 @@ public class AuthService : IAuthService
         UserLoginResponseDto userLoginResponseDto = new ()
         {
             Token = token,
-            ExpiresIn = _configuration["Jwt:ExpiryMinutes"],
+            ExpiresIn = _jwtConfig.ExpiryMinutes.ToString(),
             User = userResponseDto
         };
 
