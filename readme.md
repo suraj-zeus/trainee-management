@@ -13,7 +13,16 @@
 ## How to Run (Backend Setup)
 - Download the project folder
 - Open this project folder in any IDE
-- Update the mysql database connection string details in appsettings.json
+- Update the mysql database connection string and jwt configuration details in .env. If there is no .env file, create it under project root folder and add/update the following values :
+
+        - Jwt__Key=
+        - Jwt__Issuer=
+        - Jwt__Audience=
+        - Jwt__ExpiryMinutes=
+        - ConnectionStrings__DefaultConnection=
+        - AdminUser__Password=
+        - AdminUser__Email=
+
 - Open terminal, go to root project folder path and run this command 'dotnet restore' to restore all the required packages 
 - Run 'dotnet ef migrations add InitialCreate' and 'dotnet ef database update' command for database migrations
 - Run 'dotnet run' command to run the project
