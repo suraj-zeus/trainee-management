@@ -42,6 +42,7 @@ builder.Services.AddProblemDetails();
 
 // bind custom configurations
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.SectionName));
+builder.Services.Configure<AdminDefaultUserConfig>(builder.Configuration.GetSection(AdminDefaultUserConfig.SectionName));
 
 
 
@@ -70,7 +71,7 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 
 
 // authentication config
-var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
+var jwtSettings = builder.Configuration.GetSection(JwtConfig.SectionName).Get<JwtConfig>();
 
 builder.Services
     .AddAuthentication(options =>
@@ -159,7 +160,7 @@ using (var scope = app.Services.CreateAsyncScope())
 
     var db = services.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
-    
+
     IDbSeederService dbSeeder = services.GetRequiredService<IDbSeederService>();
     await dbSeeder.SeedAdminUserAsync();
 }
