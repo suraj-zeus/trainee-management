@@ -28,16 +28,16 @@ namespace Trainee.api.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
         {
-            
+            string requestId = HttpContext.TraceIdentifier;
             UserLoginResponseDto userLoginResponseDto = await _authService.LoginService(userLoginRequestDto);
 
             if(userLoginResponseDto == null)
             {
-                _logger.LogError($"Login attempt failed for user with username : {userLoginRequestDto.Username}");
+                _logger.LogError($"RequestId : [{requestId}]. Login attempt failed for user with username : {userLoginRequestDto.Username}");
                 return BadRequest();
             }
 
-            _logger.LogInformation($"User with username : {userLoginRequestDto.Username} logged in successfully!");
+            _logger.LogInformation($"RequestId : [{requestId}]. User with username : {userLoginRequestDto.Username} logged in successfully!");
             return Ok(userLoginResponseDto);
         }
     }

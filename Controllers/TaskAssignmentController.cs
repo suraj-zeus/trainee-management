@@ -16,10 +16,12 @@ namespace Trainee.api.Controllers;
 public class TaskAssignmentController: ControllerBase 
 {
     private ITaskAssignmentService _service;
+    private readonly ILogger<TaskAssignmentController> _logger;
 
-    public TaskAssignmentController(ITaskAssignmentService service)
+    public TaskAssignmentController(ITaskAssignmentService service, ILogger<TaskAssignmentController> logger)
     {
         _service = service;
+        _logger = logger;
     }
 
     // GET /api/TaskAssignments
@@ -34,10 +36,12 @@ public class TaskAssignmentController: ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<TaskAssignmentResponseDto>> GetTaskAssignmentById(int id)
     {
+        string requestId = HttpContext.TraceIdentifier;
         TaskAssignmentResponseDto? taskAssignment = await _service.GetTaskAssignmentById(id);
 
         if(taskAssignment == null)
         {
+             _logger.LogInformation($"RequestId : [{requestId}]. The requested task assignment record with ID : {id} was not found");
             return NotFound(new { message = $"TaskAssignment with id : {id} not found" });
         }
 
@@ -48,13 +52,10 @@ public class TaskAssignmentController: ControllerBase
     [HttpPost]
     public async Task<ActionResult<TaskAssignmentResponseDto>> CreateTaskAssignment(CreateTaskAssignmentDto createTaskAssignmentDto)
     {
-        TaskAssignmentResponseDto? taskAssignmentResponse = await _service.CreateTaskAssignment(createTaskAssignmentDto);
+        string requestId = HttpContext.TraceIdentifier;
+        TaskAssignmentResponseDto taskAssignmentResponse = await _service.CreateTaskAssignment(createTaskAssignmentDto);
 
-        if(taskAssignmentResponse == null)
-        {
-            return BadRequest();
-        }
-
+         _logger.LogInformation($"RequestId : [{requestId}]. The task assignment record with ID : {taskAssignmentResponse.Id} was created successfully..");
         return Ok(taskAssignmentResponse);
     }
 

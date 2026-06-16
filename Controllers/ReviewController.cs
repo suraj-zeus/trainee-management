@@ -12,10 +12,12 @@ using Trainee.api.dto;
 public class ReviewsController: ControllerBase 
 {
     private IReviewService _service;
+     private readonly ILogger<ReviewsController> _logger;
 
-    public ReviewsController(IReviewService service)
+    public ReviewsController(IReviewService service, ILogger<ReviewsController> logger)
     {
         _service = service;
+        _logger = logger;
     }
 
     // GET /api/Reviews
@@ -30,9 +32,11 @@ public class ReviewsController: ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ReviewResponseDto>> GetReviewById(int id)
     {
+        string requestId = HttpContext.TraceIdentifier;
         ReviewResponseDto review = await _service.GetReviewById(id);
         if(review == null)
         {
+            _logger.LogInformation($"RequestId : [{requestId}]. The requested review record with ID : {id} was not found");
             return NotFound(new { message = $"Review with id : {id} not found" });
         }
 
@@ -43,8 +47,10 @@ public class ReviewsController: ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateReview(CreateReviewDto createReviewDto)
     {
+        string requestId = HttpContext.TraceIdentifier;
         ReviewResponseDto reviewResponse = await _service.AddReview(createReviewDto);
 
+        _logger.LogInformation($"RequestId : [{requestId}]. The review record with ID : {reviewResponse.Id} created successfully..");
         return Ok(reviewResponse);
     }
 }

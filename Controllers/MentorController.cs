@@ -8,7 +8,7 @@ using Trainee.api.Services;
 namespace Trainee.api.Controllers
 {
 
-    
+
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
@@ -37,10 +37,12 @@ namespace Trainee.api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MentorResponseDto>> GetById(int id)
         {
+            string requestId = HttpContext.TraceIdentifier;
             MentorResponseDto mentor = await _mentorService.GetMentorById(id);
 
-            if (mentor == null) {
-                _logger.LogInformation($"The requested mentor record with ID : {id} was not found");
+            if (mentor == null)
+            {
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested mentor record with ID : {id} was not found");
                 return NotFound(new { Message = $"Mentor with ID : {id} was not found." });
             }
 
@@ -51,10 +53,10 @@ namespace Trainee.api.Controllers
         [HttpPost]
         public async Task<ActionResult<MentorResponseDto>> Add(CreateMentorDto createMentorDto)
         {
-
+            string requestId = HttpContext.TraceIdentifier;
             MentorResponseDto mentor = await _mentorService.AddMentor(createMentorDto);
 
-            _logger.LogInformation($"Mentor record with ID : {mentor.Id} created successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. Mentor record with ID : {mentor.Id} created successfully");
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -69,30 +71,33 @@ namespace Trainee.api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {
+            string requestId = HttpContext.TraceIdentifier;
             bool deleted = await _mentorService.DeleteMentorById(id);
 
-            if (!deleted) {
-                _logger.LogInformation($"The requested mentor record with ID : {id} was not found");
+            if (!deleted)
+            {
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested mentor record with ID : {id} was not found");
                 return NotFound(new { Message = $"Mentor with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"Mentor record with ID : {id} deleted successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. Mentor record with ID : {id} deleted successfully");
             return NoContent();
         }
 
-        
+
         [HttpPut("{id}")]
         public async Task<ActionResult<MentorResponseDto>> Update(int id, UpdateMentorDto updateMentorDto)
         {
+            string requestId = HttpContext.TraceIdentifier;
             MentorResponseDto mentor = await _mentorService.UpdateMentorById(updateMentorDto, id);
 
             if (mentor == null)
             {
-                _logger.LogInformation($"The requested mentor record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested mentor record with ID : {id} was not found");
                 return NotFound(new { Message = $"Mentor with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"Mentor record with ID : {id} updated successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. Mentor record with ID : {id} updated successfully");
             return Ok(mentor);
         }
     }

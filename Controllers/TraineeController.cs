@@ -39,10 +39,11 @@ namespace Trainee.api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TraineeResponseDto>> GetById(int id)
         {
+            string requestId = HttpContext.TraceIdentifier;
             TraineeResponseDto trainee = await _traineeService.GetTraineeById(id);
 
             if (trainee == null) {
-                _logger.LogInformation($"The requested trainee record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested trainee record with ID : {id} was not found");
                 return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
@@ -52,24 +53,25 @@ namespace Trainee.api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {
+            string requestId = HttpContext.TraceIdentifier;
             bool deleted = await _traineeService.DeleteTraineeById(id);
 
             if (!deleted) {
-                _logger.LogInformation($"The requested trainee record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested trainee record with ID : {id} was not found");
                 return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"The trainee record with ID : {id} deleted successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. The trainee record with ID : {id} deleted successfully");
             return NoContent();
         }
 
         [HttpPost]
         public async Task<ActionResult<TraineeResponseDto>> Add(CreateTraineeDto createTraineeDto)
         {
-
+            string requestId = HttpContext.TraceIdentifier;
             TraineeResponseDto trainee = await _traineeService.AddTrainee(createTraineeDto);
 
-            _logger.LogInformation($"The trainee record with ID : {trainee.Id} created successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. The trainee record with ID : {trainee.Id} created successfully");
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = trainee.Id },
@@ -83,15 +85,16 @@ namespace Trainee.api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<TraineeResponseDto>> Update(int id, UpdateTraineeDto updateTraineeDto)
         {
+            string requestId = HttpContext.TraceIdentifier;
             TraineeResponseDto trainee = await _traineeService.UpdateTraineeById(updateTraineeDto, id);
 
             if (trainee == null)
             {
-                _logger.LogInformation($"The requested trainee record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested trainee record with ID : {id} was not found");
                 return NotFound(new { Message = $"Trainee with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"The trainee record with ID : {id} updated successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. The trainee record with ID : {id} updated successfully");
             return Ok(trainee);
         }
 

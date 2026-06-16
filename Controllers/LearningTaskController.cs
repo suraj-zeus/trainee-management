@@ -39,10 +39,11 @@ namespace Trainee.api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<LearningTaskResponseDto>> GetById(int id)
         {
+             string requestId = HttpContext.TraceIdentifier;
             LearningTaskResponseDto learningTask = await _learningTaskService.GetLearningTaskById(id);
 
             if (learningTask == null) {
-                _logger.LogInformation($"The requested learning task record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested learning task record with ID : {id} was not found");
                 return NotFound(new { Message = $"Learning Task with ID : {id} was not found." });
             }
 
@@ -53,10 +54,10 @@ namespace Trainee.api.Controllers
         [HttpPost]
         public async Task<ActionResult<LearningTaskResponseDto>> Add(CreateLearningTaskDto createLearningTaskDto)
         {
-
+            string requestId = HttpContext.TraceIdentifier;
             LearningTaskResponseDto learningTaskResponse = await _learningTaskService.AddNewLearningTask(createLearningTaskDto);
 
-            _logger.LogInformation($"The learning task record with ID : {learningTaskResponse.Id} created successfully");
+            _logger.LogInformation($"RequestId : [{requestId}].  The learning task record with ID : {learningTaskResponse.Id} created successfully");
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -71,14 +72,15 @@ namespace Trainee.api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {
+            string requestId = HttpContext.TraceIdentifier;
             bool deleted = await _learningTaskService.DeleteLearningTaskById(id);
 
             if (!deleted) {
-                _logger.LogInformation($"The requested learning task record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}]. The requested learning task record with ID : {id} was not found");
                 return NotFound(new { Message = $"Learning task with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"Learing task record with ID : {id} deleted successfully");
+            _logger.LogInformation($"RequestId : [{requestId}]. Learing task record with ID : {id} deleted successfully");
             return NoContent();
         }
 
@@ -86,15 +88,16 @@ namespace Trainee.api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<LearningTaskResponseDto>> Update(int id, UpdateLearningTaskDto updateLearningTaskDto)
         {
+            string requestId = HttpContext.TraceIdentifier;
             LearningTaskResponseDto learningTaskResponse = await _learningTaskService.UpdateLearningTaskById(updateLearningTaskDto, id);
 
             if (learningTaskResponse == null)
             {
-                _logger.LogInformation($"The requested learning task record with ID : {id} was not found");
+                _logger.LogInformation($"RequestId : [{requestId}].  The requested learning task record with ID : {id} was not found");
                 return NotFound(new { Message = $"Learning task record with ID : {id} was not found." });
             }
 
-            _logger.LogInformation($"Learning task record with ID : {id} updated successfully");
+            _logger.LogInformation($"RequestId : [{requestId}].  Learning task record with ID : {id} updated successfully");
             return Ok(learningTaskResponse);
         }
     }
