@@ -17,8 +17,15 @@ using Trainee.api.Repositories;
 using Trainee.api.Models;
 using Trainee.api.Exceptions;
 using Trainee.api.Configurations;
+using DotNetEnv;
+
+// load .env file
+DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// read env variables
+builder.Configuration.AddEnvironmentVariables();
 
 
 // db config
