@@ -6,7 +6,7 @@ using Trainee.api.Services;
 using Trainee.api.dto;
 
 
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ReviewsController: ControllerBase 

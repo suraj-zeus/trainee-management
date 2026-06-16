@@ -18,18 +18,15 @@ public class AuthService : IAuthService
 
     private IUserRepository _userRepository;
     private readonly PasswordHasher<UserModel> _passwordHasher;
-    private IConfiguration _configuration;
     private JwtConfig _jwtConfig;
 
     public AuthService(
         IUserRepository userRepository, 
-        IConfiguration configuration,
         IOptions<JwtConfig> options
     )
     {
         _userRepository = userRepository;
         _passwordHasher = new();
-        _configuration = configuration;
         _jwtConfig = options.Value;
     }
 
@@ -72,7 +69,7 @@ public class AuthService : IAuthService
     private string GenerateJwtToken(UserModel user)
     {
         // generate jwt token
-        string jwtKey = _configuration["Jwt:Key"];
+        string jwtKey = _jwtConfig.Key;
 
         if(jwtKey == null)
             return null;

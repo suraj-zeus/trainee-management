@@ -117,6 +117,7 @@ builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>(
 builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
+builder.Services.AddScoped<IDbSeederService, DbSeederService>();
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMentorService, MentorService>();
@@ -154,28 +155,13 @@ app.UseExceptionHandler();
 // default admin data seeding
 using (var scope = app.Services.CreateAsyncScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var services = scope.ServiceProvider;
 
-    if (!db.Users.Any())
-    {
-        var admin = new UserModel
-        {
-            Username = "admin",
-            Email = "admin@gmail.com",
-            PasswordHash = "",
-            Role = "Admin",
-            CreatedDate = DateTime.UtcNow,
-            UpdatedDate = DateTime.UtcNow
-        };
-
-        var hasher = new PasswordHasher<UserModel>();
-        string hashedPassword = hasher.HashPassword(admin, "admin@123");
-        admin.PasswordHash = hashedPassword;
-
-        Console.WriteLine("Seeding user: " + admin);
-        db.Users.Add(admin);
-        db.SaveChanges();
-    }
+    var db = services.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
+    
+    IDbSeederService dbSeeder = services.GetRequiredService<IDbSeederService>();
+    await dbSeeder.SeedAdminUserAsync();
 }
 
 // cors
