@@ -28,20 +28,6 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
-        // Seed initial data
-        // modelBuilder.Entity<UserModel>().HasData(
-        //     new UserModel { 
-        //         Id = 1, 
-        //         Username = "Admin", 
-        //         Email = "admin@gmail.com", 
-        //         PasswordHash = "admin@123", 
-        //         Role = , 
-        //         CreatedDate = DateTime.UtcNow, 
-        //         UpdatedDate = DateTime.UtcNow 
-        //     }
-        // );
-
-
         modelBuilder.Entity<TaskAssignmentModel>()
             .HasOne(ta => ta.Trainee)          // Each TaskAssignment has one Trainee
             .WithMany(t => t.TaskAssignments)        // Each Trainee has many TaskAssignments
