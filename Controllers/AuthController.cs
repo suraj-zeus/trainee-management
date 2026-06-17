@@ -2,7 +2,7 @@
 
 
 using Microsoft.AspNetCore.Mvc;
-using Trainee.api.dto;
+using Trainee.api.Dto;
 using Trainee.api.Services;
 
 

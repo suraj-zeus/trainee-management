@@ -1,5 +1,5 @@
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 public class UserLoginResponseDto
 {

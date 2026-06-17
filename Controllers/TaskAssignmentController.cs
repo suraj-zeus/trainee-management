@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 
 
-using Trainee.api.dto;
+using Trainee.api.Dto;
 using Trainee.api.Services;
 
 namespace Trainee.api.Controllers;

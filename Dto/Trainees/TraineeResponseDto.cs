@@ -1,7 +1,7 @@
 
 
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 public class TraineeResponseDto {
     public int Id {get; set;}

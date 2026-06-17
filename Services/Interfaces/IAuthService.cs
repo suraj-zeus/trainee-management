@@ -1,7 +1,7 @@
 
 
 
-using Trainee.api.dto;
+using Trainee.api.Dto;
 
 namespace Trainee.api.Services;
 

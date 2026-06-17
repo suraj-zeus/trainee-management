@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Trainee.api.ValidationAttributes;
 
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 public class CreateTaskAssignmentDto : IValidatableObject
 {

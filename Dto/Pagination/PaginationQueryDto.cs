@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 
 public class PaginationQueryDto

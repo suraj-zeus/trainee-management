@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Trainee.api.ValidationAttributes;
 
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 
 public class CreateSubmissionDto
@@ -24,6 +24,6 @@ public class CreateSubmissionDto
 
     [Required(ErrorMessage = "Status is required")]
     [EnumDataType(typeof(SubmissionStatus), ErrorMessage = "Invalid status! Allowed values are :  Submitted and Resubmitted")]
-    public String Status { get; set; }
+    public String Status { get; set; } 
 
 }

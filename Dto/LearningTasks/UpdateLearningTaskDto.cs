@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Trainee.api.ValidationAttributes;
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 
 public class UpdateLearningTaskDto {
@@ -18,7 +18,7 @@ public class UpdateLearningTaskDto {
     public string ExpectedTechStack  {get; set;} = string.Empty;
 
     [Required(ErrorMessage = "DueDate  is required")]
-    [DataType(DataType.DateTime)]
+    [DataType(DataType.Date)]
     [DateRangeFromTodayAttribute]
     public DateTime DueDate {get; set;}
 

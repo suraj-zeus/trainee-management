@@ -1,6 +1,6 @@
 
 
-namespace Trainee.api.dto;
+namespace Trainee.api.Dto;
 
 
 
@@ -9,11 +9,11 @@ public class TaskAssignmentResponseDto
 {
     public int Id { get; set; } 
 
-    public required int TraineeId { get; set; }
+    public int TraineeId { get; set; }
 
-    public required int MentorId { get; set; }
+    public int MentorId { get; set; }
 
-    public required int LearningTaskId { get; set; }
+    public int LearningTaskId { get; set; }
 
     public DateTime AssignedDate { get; set; }
     public DateTime DueDate { get; set; }

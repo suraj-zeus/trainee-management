@@ -3,7 +3,7 @@
 
 
 using Trainee.api.Controllers;
-using Trainee.api.dto;
+using Trainee.api.Dto;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
 using Trainee.api.Services;
@@ -88,6 +88,9 @@ public class TaskAssignmentService : ITaskAssignmentService
     public async Task<TaskAssignmentResponseDto> GetTaskAssignmentById(int id)
     {
         TaskAssignmentModel taskAssignment = await _taskAssignmentRepository.GetById(id);
+
+        if(taskAssignment == null) return null;
+
         return MapTaskAssignmentToTaskAssignmentResponseDto(taskAssignment);
     }
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using Trainee.api.Controllers;
 using Trainee.api.Services;
-using Trainee.api.dto;
+using Trainee.api.Dto;
 
 
 [Authorize]
@@ -39,7 +39,7 @@ public class SubmissionsController: ControllerBase
         if(submission == null)
         {
             _logger.LogInformation($"RequestId : [{requestId}]. The requested submission record with ID : {id} was not found");
-            return NotFound(new { message = "Submission with id : {id} not found" });
+            return NotFound(new { message = $"Submission with id : {id} not found" });
         }
 
         return Ok(submission);

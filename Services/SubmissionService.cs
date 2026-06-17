@@ -1,7 +1,7 @@
 
 
 
-using Trainee.api.dto;
+using Trainee.api.Dto;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
 

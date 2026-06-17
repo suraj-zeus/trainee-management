@@ -56,7 +56,7 @@
  
 
 ## Notes 
-- This application uses 'PBKDF2 with HMAC-SHA256' to hash the password which in by default provided by ASP.NET core. No external library is being used to hash the password
+- This application uses 'PBKDF2 with HMAC-SHA256' to hash the password which is by default provided by ASP.NET core. No external library is being used to hash the password
 
 ## Features Completed
 Working API endpoints:

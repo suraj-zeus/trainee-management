@@ -1,6 +1,6 @@
 
 
-using Trainee.api.dto;
+using Trainee.api.Dto;
 using Trainee.api.Models;
 
 namespace Trainee.api.Repositories;

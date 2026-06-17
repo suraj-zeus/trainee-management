@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Trainee.api.Services;
-using Trainee.api.dto;
+using Trainee.api.Dto;
 
 
 [Authorize]
