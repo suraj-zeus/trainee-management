@@ -22,12 +22,18 @@ public class TaskAssignmentRepository : ITaskAssignmentRepository
     
     public async Task<List<TaskAssignmentModel>> GetTaskAssignments()
     {
-        return await _appDbContext.TaskAssignments.ToListAsync();
+        return await _appDbContext
+            .TaskAssignments
+            // .Include(t => t.Submissions)
+            .ToListAsync();
     }
 
     public async Task<TaskAssignmentModel> GetById(int id)
     {
-        TaskAssignmentModel taskAssignment = await _appDbContext.TaskAssignments.FindAsync(id);
+        TaskAssignmentModel taskAssignment = await _appDbContext
+                                                        .TaskAssignments
+                                                        // .Include(t => t.Submissions)
+                                                        .FindAsync(id);
         return taskAssignment;
     }
 

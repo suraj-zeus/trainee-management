@@ -1,5 +1,6 @@
 
 
+
 namespace Trainee.api.Dto;
 
 
@@ -20,5 +21,7 @@ public class TaskAssignmentResponseDto
 
     public string Status { get; set; } = string.Empty;
     public string? Remarks { get; set; } = string.Empty;
+
+    // public List<SubmissionResponseDto> Submissions { get; set; } = new List<SubmissionResponseDto>();
  
 }

@@ -106,6 +106,8 @@ builder.Services.AddControllers(options =>
 {
     // consider enum as string
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    // ignore cycle globally
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
 

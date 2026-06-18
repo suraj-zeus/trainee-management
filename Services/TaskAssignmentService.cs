@@ -123,7 +123,16 @@ public class TaskAssignmentService : ITaskAssignmentService
             AssignedDate = assignment.AssignedDate,
             DueDate = assignment.DueDate,
             Status = assignment.Status,
-            Remarks = assignment.Remarks
+            Remarks = assignment.Remarks,
+            // Submissions = assignment.Submissions.Select(s => new SubmissionResponseDto
+            // {
+            //     Id = s.Id,
+            //     TaskAssignmentId = s.TaskAssignmentId,
+            //     SubmissionUrl = s.SubmissionUrl,
+            //     Notes = s.Notes,
+            //     SubmissionDate = s.SubmissionDate,
+            //     Status = s.Status
+            // }).ToList()
         };
 
         return taskAssignmentResponse;
