@@ -25,8 +25,10 @@ public class GlobalExceptionHandler : IExceptionHandler
         // Handle multiple exceptions in one place
         var (statusCode, title) = exception switch
         {
+            ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden"),
             UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
             KeyNotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found"),
+            BadRequestException => (StatusCodes.Status400BadRequest, "Bad Request"),
             ArgumentException => (StatusCodes.Status400BadRequest, "Invalid Input"),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };

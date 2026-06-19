@@ -20,4 +20,6 @@ public class SubmissionModel
     public String Status { get; set; }
 
     public ICollection<ReviewModel> Reviews { get; set; } = new List<ReviewModel>();
+
+    public ICollection<SubmissionFileModel> SubmissionFiles {get; set;} = new List<SubmissionFileModel>();
 }

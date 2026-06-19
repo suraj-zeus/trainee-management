@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 
 using Trainee.api.Dto;
 using Trainee.api.Models;
@@ -11,5 +13,6 @@ public interface ISubmissionService
 
     public Task<SubmissionResponseDto> GetSubmissionById(int id);
     public Task<SubmissionResponseDto> AddSubmission(CreateSubmissionDto createSubmissionDto);
+
 
 }

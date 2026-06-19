@@ -1,7 +1,8 @@
 
-
-
+using System.Security.Claims;
+using Trainee.api.Configurations;
 using Trainee.api.Dto;
+using Trainee.api.Exceptions;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
 
@@ -12,11 +13,20 @@ public class SubmissionService : ISubmissionService
 
     private ISubmissionRepository _submissionRepository;
     private ITaskAssignmentRepository _taskAssignmentRepository;
+    private ISubmissionFileRepository _submissionFileRepository;
+    private IFileStorageService _fileStorageService;
 
-    public SubmissionService(ISubmissionRepository submissionRepository, ITaskAssignmentRepository taskAssignmentRepository)
+    public SubmissionService(
+        ISubmissionRepository submissionRepository, 
+        ITaskAssignmentRepository taskAssignmentRepository,
+        IFileStorageService fileStorageService,
+        ISubmissionFileRepository submissionFileRepository
+    )
     {
         _submissionRepository = submissionRepository;
         _taskAssignmentRepository = taskAssignmentRepository;
+        _fileStorageService = fileStorageService;
+        _submissionFileRepository = submissionFileRepository;
     }
 
     public async Task<List<SubmissionResponseDto>> GetAllSubmissions()
@@ -63,6 +73,7 @@ public class SubmissionService : ISubmissionService
         await _submissionRepository.Add(submission);
         return MapSubmissionModelToSubmissionResponseDto(submission);
     }
+
 
 
     private SubmissionResponseDto MapSubmissionModelToSubmissionResponseDto(SubmissionModel submission)

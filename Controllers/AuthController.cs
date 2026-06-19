@@ -14,7 +14,6 @@ namespace Trainee.api.Controllers
     public class AuthController : ControllerBase
     {
 
-
         private IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
 
@@ -34,7 +33,7 @@ namespace Trainee.api.Controllers
             if(userLoginResponseDto == null)
             {
                 _logger.LogError($"RequestId : [{requestId}]. Login attempt failed for user with username : {userLoginRequestDto.Username}");
-                return BadRequest();
+                return BadRequest(new {Message = "Invalid Credentials.."});
             }
 
             _logger.LogInformation($"RequestId : [{requestId}]. User with username : {userLoginRequestDto.Username} logged in successfully!");

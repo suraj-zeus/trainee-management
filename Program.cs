@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Http.Features;
 using System.Text.Json.Serialization;
 
 using NSwag;
@@ -28,6 +29,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 
+// exception handling 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(); 
+
+
+
+// bind custom configurations
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.SectionName));
+builder.Services.Configure<AdminDefaultUserConfig>(builder.Configuration.GetSection(AdminDefaultUserConfig.SectionName));
+builder.Services.Configure<FileStorageConfig>(builder.Configuration.GetSection(FileStorageConfig.SectionName));
+
+
 // db config
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -35,14 +48,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
-
-// exception handling 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails(); 
-
-// bind custom configurations
-builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.SectionName));
-builder.Services.Configure<AdminDefaultUserConfig>(builder.Configuration.GetSection(AdminDefaultUserConfig.SectionName));
 
 
 
@@ -59,6 +64,22 @@ builder.Services.AddCors(options =>
                                 .AllowAnyMethod();
                       });
 });
+
+
+// request(kestrel) size or form data size configurations 
+FileStorageConfig fileStorageConfig = builder.Configuration.GetSection(FileStorageConfig.SectionName).Get<FileStorageConfig>();
+
+// kertrel size
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.Limits.MaxRequestBodySize = fileStorageConfig.MaxFileSizeBytes;
+// });
+
+// for data size
+// builder.Services.Configure<FormOptions>(options =>
+// {
+//     options.MultipartBodyLengthLimit = fileStorageConfig.MaxFileSizeBytes;
+// });
 
 
 // logging configs
@@ -119,7 +140,10 @@ builder.Services.AddScoped<IMentorRepository, MentorRepository>();
 builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
 builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<ISubmissionFileRepository, SubmissionFileRepository>();
 
+
+builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 builder.Services.AddScoped<IDbSeederService, DbSeederService>();
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -128,6 +152,7 @@ builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ISubmissionFileService, SubmissionFileService>();
 
 
 // openapi (swagger) config

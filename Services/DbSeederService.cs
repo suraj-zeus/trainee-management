@@ -24,8 +24,6 @@ public class DbSeederService : IDbSeederService
     public async Task SeedAdminUserAsync()
     {
 
-
-
         if (await _appDbContext.Users.AnyAsync(u => u.Username == _adminDefaultUserConfig.Username))
         {
             return;
