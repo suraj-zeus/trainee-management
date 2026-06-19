@@ -69,17 +69,13 @@ builder.Services.AddCors(options =>
 // request(kestrel) size or form data size configurations 
 FileStorageConfig fileStorageConfig = builder.Configuration.GetSection(FileStorageConfig.SectionName).Get<FileStorageConfig>();
 
-// kertrel size
-// builder.WebHost.ConfigureKestrel(serverOptions =>
-// {
-//     serverOptions.Limits.MaxRequestBodySize = fileStorageConfig.MaxFileSizeBytes;
-// });
+
 
 // for data size
-// builder.Services.Configure<FormOptions>(options =>
-// {
-//     options.MultipartBodyLengthLimit = fileStorageConfig.MaxFileSizeBytes;
-// });
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = fileStorageConfig.MaxFileSizeBytes;
+});
 
 
 // logging configs
