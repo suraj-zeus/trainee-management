@@ -1,6 +1,7 @@
 
 using System.Security.Claims;
 using Trainee.api.Configurations;
+using Trainee.api.Constants;
 using Trainee.api.Dto;
 using Trainee.api.Exceptions;
 using Trainee.api.Models;
@@ -15,18 +16,21 @@ public class SubmissionService : ISubmissionService
     private ITaskAssignmentRepository _taskAssignmentRepository;
     private ISubmissionFileRepository _submissionFileRepository;
     private IFileStorageService _fileStorageService;
+    private IRedisService _redisService;
 
     public SubmissionService(
         ISubmissionRepository submissionRepository, 
         ITaskAssignmentRepository taskAssignmentRepository,
         IFileStorageService fileStorageService,
-        ISubmissionFileRepository submissionFileRepository
+        ISubmissionFileRepository submissionFileRepository,
+        IRedisService redisService
     )
     {
         _submissionRepository = submissionRepository;
         _taskAssignmentRepository = taskAssignmentRepository;
         _fileStorageService = fileStorageService;
         _submissionFileRepository = submissionFileRepository;
+        _redisService = redisService;
     }
 
     public async Task<List<SubmissionResponseDto>> GetAllSubmissions()
@@ -44,12 +48,24 @@ public class SubmissionService : ISubmissionService
 
     public async Task<SubmissionResponseDto> GetSubmissionById(int id)
     {
+        // first search in cache 
+        string redisKey = RedisCacheKeys.Submission(id);
+        SubmissionResponseDto submissionResp = await _redisService.GetAsync<SubmissionResponseDto>(redisKey);
+
+        if(submissionResp != null) 
+            return submissionResp;
+
+        // if not found in cache, get it from db
         SubmissionModel submission = await _submissionRepository.GetById(id);
 
         if(submission == null)
             return null;
 
-        return MapSubmissionModelToSubmissionResponseDto(submission);
+        submissionResp = MapSubmissionModelToSubmissionResponseDto(submission);
+
+        // add in cache
+        _redisService.SetAsync<SubmissionResponseDto>(redisKey, submissionResp);
+        return submissionResp;
     }
 
     public async Task<SubmissionResponseDto> AddSubmission(CreateSubmissionDto createSubmissionDto)
@@ -73,7 +89,6 @@ public class SubmissionService : ISubmissionService
         await _submissionRepository.Add(submission);
         return MapSubmissionModelToSubmissionResponseDto(submission);
     }
-
 
 
     private SubmissionResponseDto MapSubmissionModelToSubmissionResponseDto(SubmissionModel submission)

@@ -1,4 +1,5 @@
 
+using Trainee.api.Constants;
 using Trainee.api.Dto;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
@@ -10,60 +11,87 @@ public class TraineeService : ITraineeService
 {
 
     private ITraineeRepository _traineeRepository;
+    private IRedisService _redisService;
 
-    public TraineeService(ITraineeRepository traineeRepository)
+    public TraineeService(ITraineeRepository traineeRepository, IRedisService redisService)
     {
         _traineeRepository = traineeRepository;
+        _redisService = redisService;
     }
 
+
+    // currently not using this method
     public async Task<List<TraineeResponseDto>> GetAllTrainees()
     {
         List<TraineeModel> trainees = await _traineeRepository.GetTrainees();
-        List<TraineeResponseDto> traineesResponse =  new List<TraineeResponseDto>();
+        List<TraineeResponseDto> traineesResponse = new List<TraineeResponseDto>();
 
-        foreach(TraineeModel trainee in trainees) {
+        foreach (TraineeModel trainee in trainees)
+        {
             traineesResponse.Add(MapTraineeModelToTraineeResponseDto(trainee));
         }
 
         return traineesResponse;
     }
 
+
+    // currently not using this method
+    public async Task<List<TraineeResponseDto>> GetAllTraineesWithSeachParam(string searchParam)
+    {
+        List<TraineeModel> trainees = await _traineeRepository.GetTraineesWithSearchParam(searchParam);
+        List<TraineeResponseDto> traineesResponse = new List<TraineeResponseDto>();
+
+        foreach (TraineeModel trainee in trainees)
+        {
+            traineesResponse.Add(MapTraineeModelToTraineeResponseDto(trainee));
+        }
+
+        return traineesResponse;
+    }
+
+
+
     public async Task<PaginationResponseDto<TraineeResponseDto>> GetPaginatedTrainees(PaginationQueryDto paginationQueryDto)
     {
         var (totalRecords, trainees) = await _traineeRepository.GetPaginatedTrainees(paginationQueryDto);
-        List<TraineeResponseDto> traineesResponse =  new List<TraineeResponseDto>();
+        List<TraineeResponseDto> traineesResponse = new List<TraineeResponseDto>();
 
-        foreach(TraineeModel trainee in trainees) {
+        foreach (TraineeModel trainee in trainees)
+        {
             traineesResponse.Add(MapTraineeModelToTraineeResponseDto(trainee));
         }
 
         return MapToPaginatedTraineeResponse(traineesResponse, paginationQueryDto, totalRecords);
     }
 
-    public async Task<List<TraineeResponseDto>> GetAllTraineesWithSeachParam(string searchParam)
-    {
-        List<TraineeModel> trainees = await _traineeRepository.GetTraineesWithSearchParam(searchParam);
-        List<TraineeResponseDto> traineesResponse =  new List<TraineeResponseDto>();
 
-        foreach(TraineeModel trainee in trainees) {
-            traineesResponse.Add(MapTraineeModelToTraineeResponseDto(trainee));
-        }
-
-        return traineesResponse;
-    }
 
     public async Task<TraineeResponseDto> GetTraineeById(int id)
     {
+
+        // first search in cache 
+        string redisKey = RedisCacheKeys.Trainee(id);
+        TraineeResponseDto traineeResp = await _redisService.GetAsync<TraineeResponseDto>(redisKey);
+
+        if(traineeResp != null)
+            return traineeResp;
+
+        // if not found in cache, get it from db
         TraineeModel trainee = await _traineeRepository.GetById(id);
 
-        if(trainee == null)
+        if (trainee == null)
             return null;
-        return MapTraineeModelToTraineeResponseDto(trainee);
+
+        traineeResp = MapTraineeModelToTraineeResponseDto(trainee);
+
+        // add in cache
+        _redisService.SetAsync<TraineeResponseDto>(redisKey, traineeResp);
+        return traineeResp;
     }
 
     public async Task<TraineeResponseDto> AddTrainee(CreateTraineeDto createTraineeDto)
     {
-        TraineeModel trainee = new ()
+        TraineeModel trainee = new()
         {
             FirstName = createTraineeDto.FirstName,
             LastName = createTraineeDto.LastName,
@@ -83,6 +111,10 @@ public class TraineeService : ITraineeService
 
     public async Task<bool> DeleteTraineeById(int id)
     {
+        // delete the trainee record from cache
+        string redisKey = RedisCacheKeys.Trainee(id);
+        await _redisService.RemoveAsync(redisKey);
+
         TraineeModel trainee = await _traineeRepository.GetById(id);
 
         if (trainee == null)
@@ -94,9 +126,13 @@ public class TraineeService : ITraineeService
 
     public async Task<TraineeResponseDto> UpdateTraineeById(UpdateTraineeDto updateTraineeDto, int id)
     {
+        // delete the trainee record from cache
+        string redisKey = RedisCacheKeys.Trainee(id);
+        await _redisService.RemoveAsync(redisKey);
+
         TraineeModel trainee = await _traineeRepository.UpdateTraineeById(updateTraineeDto, id);
 
-        if(trainee == null) 
+        if (trainee == null)
             return null;
 
         return MapTraineeModelToTraineeResponseDto(trainee);
@@ -105,7 +141,7 @@ public class TraineeService : ITraineeService
 
     private PaginationResponseDto<TraineeResponseDto> MapToPaginatedTraineeResponse(List<TraineeResponseDto> traineesResponse, PaginationQueryDto paginationQueryDto, int totalRecords)
     {
-        PaginationResponseDto<TraineeResponseDto> paginatedResponse = new ()
+        PaginationResponseDto<TraineeResponseDto> paginatedResponse = new()
         {
             PageNumber = paginationQueryDto.PageNumber,
             PageSize = paginationQueryDto.PageSize,
@@ -117,7 +153,8 @@ public class TraineeService : ITraineeService
     }
 
 
-    private TraineeResponseDto MapTraineeModelToTraineeResponseDto(TraineeModel traineeModel) {
+    private TraineeResponseDto MapTraineeModelToTraineeResponseDto(TraineeModel traineeModel)
+    {
 
         TraineeResponseDto traineeResponseDto = new()
         {

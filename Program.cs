@@ -39,6 +39,7 @@ builder.Services.AddProblemDetails();
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.SectionName));
 builder.Services.Configure<AdminDefaultUserConfig>(builder.Configuration.GetSection(AdminDefaultUserConfig.SectionName));
 builder.Services.Configure<FileStorageConfig>(builder.Configuration.GetSection(FileStorageConfig.SectionName));
+builder.Services.Configure<RedisConfig>(builder.Configuration.GetSection(RedisConfig.SectionName));
 
 
 // db config
@@ -49,7 +50,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 
+// redis config
+RedisConfig redisConfig = builder.Configuration.GetSection(RedisConfig.SectionName).Get<RedisConfig>();
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisConfig.ConnectionString;
+    options.InstanceName = redisConfig.InstanceName;
+});
 
 // cors configs
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -140,6 +148,7 @@ builder.Services.AddScoped<ISubmissionFileRepository, SubmissionFileRepository>(
 
 
 builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IDbSeederService, DbSeederService>();
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

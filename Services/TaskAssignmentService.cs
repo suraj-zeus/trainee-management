@@ -2,6 +2,7 @@
 
 
 
+using Trainee.api.Constants;
 using Trainee.api.Controllers;
 using Trainee.api.Dto;
 using Trainee.api.Models;
@@ -17,18 +18,22 @@ public class TaskAssignmentService : ITaskAssignmentService
     private IMentorRepository _mentorRepository;
     private ITraineeRepository _traineeRepository;
     private ILearningTaskRepository _learningTaskRepository;
+    private IRedisService _redisService;
+
 
     public TaskAssignmentService(
         ITaskAssignmentRepository taskAssignmentRepository,
         IMentorRepository mentorRepository,
         ITraineeRepository traineeRepository,
-        ILearningTaskRepository learningTaskRepository
+        ILearningTaskRepository learningTaskRepository,
+        IRedisService redisService
     )
     {
         _taskAssignmentRepository = taskAssignmentRepository;
         _learningTaskRepository = learningTaskRepository;
         _traineeRepository = traineeRepository;
         _mentorRepository = mentorRepository;
+        _redisService = redisService;
     }
 
     public async Task<List<TaskAssignmentResponseDto>> GetAllTaskAssignments()
@@ -87,18 +92,34 @@ public class TaskAssignmentService : ITaskAssignmentService
 
     public async Task<TaskAssignmentResponseDto> GetTaskAssignmentById(int id)
     {
+        // first search in cache 
+        string redisKey = RedisCacheKeys.TaskAssignment(id);
+        TaskAssignmentResponseDto taskAssignResp = await _redisService.GetAsync<TaskAssignmentResponseDto>(redisKey);
+
+        if(taskAssignResp != null) return taskAssignResp;
+
+        // if not found in cache, search in db
         TaskAssignmentModel taskAssignment = await _taskAssignmentRepository.GetById(id);
 
-        if(taskAssignment == null) return null;
+        if(taskAssignment == null) {
+            return null;
+        }
 
-        return MapTaskAssignmentToTaskAssignmentResponseDto(taskAssignment);
+        taskAssignResp = MapTaskAssignmentToTaskAssignmentResponseDto(taskAssignment);
+        
+        // add in cache
+        _redisService.SetAsync<TaskAssignmentResponseDto>(redisKey, taskAssignResp);
+        return taskAssignResp;
     }
 
 
 
     public async Task<TaskAssignmentResponseDto> UpdateTaskAssignmentDetails(int id, UpdateTaskAssignmentDto updateTaskAssignmentDto)
     {
-       
+        // delete the record from cache
+        string redisKey = RedisCacheKeys.TaskAssignment(id);
+        await _redisService.RemoveAsync(redisKey);
+
         TaskAssignmentModel taskAssignment = await _taskAssignmentRepository.UpdateTaskAssignmentById(updateTaskAssignmentDto, id);
 
         if(taskAssignment == null)
