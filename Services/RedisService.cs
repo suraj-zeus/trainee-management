@@ -80,6 +80,15 @@ public class RedisService : IRedisService
     {
         try
         {
+
+            string? cachedData = await _cache.GetStringAsync(key);
+
+            if (string.IsNullOrEmpty(cachedData))
+            {
+                _logger.LogWarning("Cache value for key: {Key} does not exist..", key);
+                return;
+            }
+
             await _cache.RemoveAsync(key);
             _logger.LogInformation("Successfully removed key from cache: {Key}", key);
         }
