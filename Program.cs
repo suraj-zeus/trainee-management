@@ -40,6 +40,7 @@ builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig
 builder.Services.Configure<AdminDefaultUserConfig>(builder.Configuration.GetSection(AdminDefaultUserConfig.SectionName));
 builder.Services.Configure<FileStorageConfig>(builder.Configuration.GetSection(FileStorageConfig.SectionName));
 builder.Services.Configure<RedisConfig>(builder.Configuration.GetSection(RedisConfig.SectionName));
+builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(RabbitMqConfig.SectionName));
 
 
 // db config
@@ -85,6 +86,9 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = fileStorageConfig.MaxFileSizeBytes;
 });
 
+
+// to register the context accessor
+builder.Services.AddHttpContextAccessor();
 
 // logging configs
 builder.Logging.ClearProviders();
@@ -158,6 +162,7 @@ builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ISubmissionFileService, SubmissionFileService>();
+builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 
 
 // openapi (swagger) config
@@ -181,6 +186,8 @@ builder.Services.AddOpenApiDocument(config =>
 
 
 var app = builder.Build();
+
+
 
 // Use the exception handler
 app.UseExceptionHandler(); 

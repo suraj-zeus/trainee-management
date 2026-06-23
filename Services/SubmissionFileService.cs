@@ -2,6 +2,7 @@ using System.Security.Claims;
 
 using Trainee.api.Dto;
 using Trainee.api.Exceptions;
+using Trainee.api.Messaging;
 using Trainee.api.Models;
 using Trainee.api.Repositories;
 
@@ -13,18 +14,23 @@ public class SubmissionFileService : ISubmissionFileService
 {
     private ISubmissionFileRepository _submissionFileRepository;
     private IFileStorageService _fileStorageService;
-
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private ISubmissionRepository _submissionRepository;
+    private IRabbitMqService _rabbitMqService;
     
     public SubmissionFileService(
         ISubmissionRepository submissionRepository,
         ISubmissionFileRepository submissionFileRepository,
-        IFileStorageService fileStorageService
+        IFileStorageService fileStorageService,
+        IRabbitMqService rabbitMqService,
+        IHttpContextAccessor httpContextAccessor
     )
     {
         _submissionRepository = submissionRepository;
         _fileStorageService = fileStorageService;
         _submissionFileRepository = submissionFileRepository;
+        _rabbitMqService = rabbitMqService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -69,6 +75,21 @@ public class SubmissionFileService : ISubmissionFileService
         };
 
         await _submissionFileRepository.Add(submissionFile);
+
+
+        // publish message in rabbitmq 
+        SubmissionProcessingRequest submissionProcessingRequest = new()
+        {
+            MessageId = Guid.NewGuid().ToString(),
+            CorrelationId = _httpContextAccessor.HttpContext.TraceIdentifier,
+            SubmissionId = submissionFile.SubmissionId,
+            FileId = submissionFile.Id,
+            RequestedAt = DateTime.UtcNow,
+            ContractVersion = 1
+        };
+
+        await _rabbitMqService.Publish(submissionProcessingRequest);
+
         return MapSubmissionFileToUploadSubmissionFileResponseDto(submissionFile);
     }
 
