@@ -26,4 +26,6 @@ public class UploadSubmissionFileResponseDto
 
     public DateTime UpdatedDate {get; set; } = DateTime.UtcNow;
 
+    public string CorrelationId {get; set;} = string.Empty;
+
 }

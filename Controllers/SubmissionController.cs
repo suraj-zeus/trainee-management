@@ -68,7 +68,7 @@ public class SubmissionsController : ControllerBase
     public async Task<ActionResult<UploadSubmissionFileResponseDto>> Upload(int submissionId, CreateSubmissionFileDto createSubmissionFileDto)
     {
         UploadSubmissionFileResponseDto submissionFileResp = await _submissionFileService.Upload(createSubmissionFileDto, submissionId, User);
-        return Ok(submissionFileResp);
+        return Accepted(submissionFileResp);
     }
 
 

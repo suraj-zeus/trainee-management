@@ -7,6 +7,6 @@ namespace Trainee.api.Services;
 
 public interface IRabbitMqService
 {
-        public Task Publish(SubmissionProcessingRequest submissionProcessingRequest);
+        public Task PublishAsync(SubmissionProcessingRequest submissionProcessingRequest);
 
 }

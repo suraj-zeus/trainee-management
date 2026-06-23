@@ -51,7 +51,7 @@ public class RabbitMqService : IRabbitMqService
     }
 
 
-    public async Task Publish(SubmissionProcessingRequest submissionProcessingRequest)
+    public async Task PublishAsync(SubmissionProcessingRequest submissionProcessingRequest)
     {
         _connection = await GetConnectionAsync();
 

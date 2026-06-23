@@ -78,19 +78,21 @@ public class SubmissionFileService : ISubmissionFileService
 
 
         // publish message in rabbitmq 
+        string correlationId = _httpContextAccessor.HttpContext.TraceIdentifier;
+
         SubmissionProcessingRequest submissionProcessingRequest = new()
         {
             MessageId = Guid.NewGuid().ToString(),
-            CorrelationId = _httpContextAccessor.HttpContext.TraceIdentifier,
+            CorrelationId = correlationId,
             SubmissionId = submissionFile.SubmissionId,
             FileId = submissionFile.Id,
             RequestedAt = DateTime.UtcNow,
             ContractVersion = 1
         };
 
-        await _rabbitMqService.Publish(submissionProcessingRequest);
+        await _rabbitMqService.PublishAsync(submissionProcessingRequest);
 
-        return MapSubmissionFileToUploadSubmissionFileResponseDto(submissionFile);
+        return MapSubmissionFileToUploadSubmissionFileResponseDto(submissionFile, correlationId);
     }
 
 
@@ -155,7 +157,7 @@ public class SubmissionFileService : ISubmissionFileService
     }
 
 
-    private UploadSubmissionFileResponseDto MapSubmissionFileToUploadSubmissionFileResponseDto(SubmissionFileModel submissionFile)
+    private UploadSubmissionFileResponseDto MapSubmissionFileToUploadSubmissionFileResponseDto(SubmissionFileModel submissionFile, string correlationId)
     {
         UploadSubmissionFileResponseDto uploadSubmissionFile = new ()
         {
@@ -168,7 +170,8 @@ public class SubmissionFileService : ISubmissionFileService
             CheckSum = submissionFile.CheckSum,
             UploadedByUserId = submissionFile.UploadedByUserId,
             CreatedDate = submissionFile.CreatedDate,
-            UpdatedDate = submissionFile.UpdatedDate
+            UpdatedDate = submissionFile.UpdatedDate,
+            CorrelationId = correlationId
         };
 
         return uploadSubmissionFile;
