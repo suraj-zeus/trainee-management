@@ -64,7 +64,7 @@ public class SubmissionService : ISubmissionService
         submissionResp = MapSubmissionModelToSubmissionResponseDto(submission);
 
         // add in cache
-        _redisService.SetAsync<SubmissionResponseDto>(redisKey, submissionResp);
+        await _redisService.SetAsync<SubmissionResponseDto>(redisKey, submissionResp);
         return submissionResp;
     }
 

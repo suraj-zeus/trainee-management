@@ -64,7 +64,7 @@ public class SubmissionsController : ControllerBase
     }
 
     // POST /api/submissions/{submissionId}/files 
-    [HttpPost("{submissionId}")]
+    [HttpPost("{submissionId}/files")]
     public async Task<ActionResult<UploadSubmissionFileResponseDto>> Upload(int submissionId, CreateSubmissionFileDto createSubmissionFileDto)
     {
         UploadSubmissionFileResponseDto submissionFileResp = await _submissionFileService.Upload(createSubmissionFileDto, submissionId, User);

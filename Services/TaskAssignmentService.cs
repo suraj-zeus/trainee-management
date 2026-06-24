@@ -108,7 +108,7 @@ public class TaskAssignmentService : ITaskAssignmentService
         taskAssignResp = MapTaskAssignmentToTaskAssignmentResponseDto(taskAssignment);
         
         // add in cache
-        _redisService.SetAsync<TaskAssignmentResponseDto>(redisKey, taskAssignResp);
+        await _redisService.SetAsync<TaskAssignmentResponseDto>(redisKey, taskAssignResp);
         return taskAssignResp;
     }
 

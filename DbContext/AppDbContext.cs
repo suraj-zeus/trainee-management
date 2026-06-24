@@ -25,6 +25,8 @@ public class AppDbContext : DbContext
 
     public DbSet<SubmissionFileModel> SubmissionFiles { get; set; }
 
+    public DbSet<ProcessingJobModel> ProcessingJobs {get; set;}
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,5 +68,19 @@ public class AppDbContext : DbContext
             .HasOne(sf => sf.Submission)
             .WithMany(s => s.SubmissionFiles)
             .HasForeignKey(sf => sf.SubmissionId);
+
+
+        modelBuilder.Entity<ProcessingJobModel>()
+            .HasOne(p => p.Submission)
+            .WithMany() // Leaves collection empty if Submission doesn't track Job history
+            .HasForeignKey(p => p.SubmissionId)
+            .OnDelete(DeleteBehavior.Cascade); // Deletes job tracker if submission is purged
+
+        modelBuilder.Entity<ProcessingJobModel>()
+            .HasOne(p => p.SubmissionFile)
+            .WithMany() 
+            .HasForeignKey(p => p.FileId)
+            .OnDelete(DeleteBehavior.Cascade); // Deletes job tracker if file is purged
+
     }
 }

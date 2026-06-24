@@ -34,7 +34,7 @@ public class SubmissionFilesController : ControllerBase
 
         if (stream == null)
         {
-            return NotFound(new {Message = "Submission file record with id : {id} was not found"});
+            return NotFound(new {Message = $"Submission file record with id : {id} was not found"});
         }
 
         return File(stream, contentType, originalName);
@@ -49,9 +49,9 @@ public class SubmissionFilesController : ControllerBase
 
         if (!isDeleted)
         {
-            return NotFound(new {Message = "Submission file record with id : {id} was not found"});
+            return NotFound(new {Message = $"Submission file record with id : {id} was not found"});
         }
 
-        return Ok(new {Message = "Submission file record with ID : {id} deleted successfully"});
+        return Ok(new {Message = $"Submission file record with ID : {id} deleted successfully"});
     }
 }

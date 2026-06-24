@@ -85,7 +85,7 @@ public class TraineeService : ITraineeService
         traineeResp = MapTraineeModelToTraineeResponseDto(trainee);
 
         // add in cache
-        _redisService.SetAsync<TraineeResponseDto>(redisKey, traineeResp);
+        await _redisService.SetAsync<TraineeResponseDto>(redisKey, traineeResp);
         return traineeResp;
     }
 

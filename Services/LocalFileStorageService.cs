@@ -41,9 +41,13 @@ public class LocalFileStorageService : IFileStorageService
             throw new BadRequestException($"File size exceeds the {_fileStorageConfig.MaxFileSizeBytes} bytes limit");
 
         var fileExt = Path.GetExtension(file.FileName).ToLowerInvariant();
+        var fileContentType = file.ContentType;
 
         if (!_fileStorageConfig.AllowedExtensions.Contains(fileExt))
             throw new BadRequestException($"File extension {fileExt} is not allowed");
+
+        if(!_fileStorageConfig.AllowedContentTypes.Contains(fileContentType)) 
+            throw new BadRequestException($"File content-type {fileContentType} is not allowed");
 
         return true;
     }

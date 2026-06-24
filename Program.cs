@@ -149,6 +149,7 @@ builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>(
 builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ISubmissionFileRepository, SubmissionFileRepository>();
+builder.Services.AddScoped<IProcessJobRepository, ProcessingJobRepository>();
 
 
 builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
@@ -163,6 +164,8 @@ builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ISubmissionFileService, SubmissionFileService>();
 builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+builder.Services.AddScoped<IProcessJobService, ProcessJobService>();
+
 
 
 // openapi (swagger) config
