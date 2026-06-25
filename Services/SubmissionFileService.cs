@@ -61,9 +61,20 @@ public class SubmissionFileService : ISubmissionFileService
 
         var fileExt = Path.GetExtension(formFile.FileName).ToLowerInvariant();
         var storageName = $"{Guid.NewGuid()}{fileExt}";
+        var originalFileName = Path.GetFileName(formFile.FileName);
 
         await using var stream = formFile.OpenReadStream();
         var checkSum = await _fileStorageService.ComputeCheckSum(stream);
+
+
+        // avoid duplicate file upload by validating the checksum
+        SubmissionFileModel existingFile = await _submissionFileRepository.FindByChecksum(checkSum);
+
+        if(existingFile != null)
+        {
+            throw new InvalidOperationException($"Invalid operation! This file : {originalFileName} already exists");
+        }
+
 
         // get path of saved file
         string path = await _fileStorageService.SaveAsync(stream, storageName);
@@ -83,7 +94,7 @@ public class SubmissionFileService : ISubmissionFileService
             SubmissionFileModel submissionFile = new()
             {
                 SubmissionId = submissionId,
-                OriginalFileName = Path.GetFileName(formFile.FileName),
+                OriginalFileName = originalFileName,
                 StorageName = storageName,
                 ContentType = formFile.ContentType,
                 FileSizeBytes = formFile.Length,
@@ -198,7 +209,7 @@ public class SubmissionFileService : ISubmissionFileService
 
         if (!await _fileStorageService.ExistsAsync(submissionFile.StorageName))
         {
-            throw new KeyNotFoundException($"Physical file is mission for the given file id : {id}");
+            throw new KeyNotFoundException($"Physical file is missing for the given file id : {id}");
         }
 
         await _fileStorageService.DeleteAsync(submissionFile.StorageName);

@@ -14,6 +14,6 @@ public class ProcessingJobModel
     public DateTime StartedDate {get; set;} = DateTime.UtcNow;
     public DateTime CompletedDate {get; set;}
 
-    public SubmissionFileModel SubmissionFile = null!;
-    public SubmissionModel Submission = null!;
+    public SubmissionFileModel SubmissionFile {get; set;} = null!;
+    public SubmissionModel Submission {get; set;} = null!;
 }

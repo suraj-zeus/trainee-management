@@ -6,14 +6,14 @@ public class TaskAssignmentModel
 {
     public int Id { get; set; } 
 
-    public required int TraineeId { get; set; }
+    public int TraineeId { get; set; }
     public TraineeModel Trainee { get; set; } = null!;
 
-    public required int MentorId { get; set; }
+    public int MentorId { get; set; }
     public MentorModel Mentor { get; set; } = null!;
 
-    public required int LearningTaskId { get; set; }
-    public LearningTaskModel LearningTask { get; set; } = null!;
+    public int LearningTaskId { get; set; }
+    public LearningTaskModel LearningTask { get; set; } = null!; 
 
     public DateTime AssignedDate { get; set; }
     public DateTime DueDate { get; set; }
